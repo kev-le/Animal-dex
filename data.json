@@ -1,0 +1,20 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$rWCpbrVqYrWx$y0H3YprmWi4He78KHXmDOaz955WQBIFPrHI2Jo8zH9I=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@cmpt470.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2019-07-12T02:01:40.445Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

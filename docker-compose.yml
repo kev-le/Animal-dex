@@ -1,0 +1,56 @@
+### development
+
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-devel
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/code:ro
+    environment:
+      DJANGO_MODE: devel # look at os.environ['DJANGO_MODE'] to detect deployment
+  db:
+    image: "postgres:latest"
+    volumes:
+      - db:/var/lib/postgresql/data:rw
+    environment:
+      POSTGRES_USER: project
+      POSTGRES_PASSWORD: secret
+volumes:
+  static:
+  db:
+
+#### production
+
+# version: '3'
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile-app
+#     volumes:
+#       - static:/static:rw
+#     environment:
+#       DJANGO_MODE: production
+#   db:
+#     image: "postgres:latest"
+#     volumes:
+#       - db:/var/lib/postgresql/data:rw
+#     environment:
+#       POSTGRES_USER: project
+#       POSTGRES_PASSWORD: secret
+#   web:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile-web
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - static:/static:ro
+#
+# volumes:
+#   static:
+#   db:

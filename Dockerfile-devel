@@ -1,0 +1,8 @@
+FROM python:3.7
+WORKDIR /code
+ENV PYTHONUNBUFFERED=1
+COPY requirements.txt /tmp/
+RUN pip install -r /tmp/requirements.txt
+CMD python cmpt470/manage.py migrate \
+  && python cmpt470/manage.py loaddata data.json \
+  && python cmpt470/manage.py runserver 0:8000
