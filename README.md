@@ -14,3 +14,7 @@
 - To switch between development and production, edit comments in docker-compose.yml
 - Admin: root
    Pwd: cmpt470
+
+## Importing data
+
+See `data/code/add_animals_to_db.py`

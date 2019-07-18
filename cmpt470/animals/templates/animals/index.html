@@ -1,0 +1,52 @@
+<h1>All Animals</h1>
+
+<!-- Cards from w3schools -->
+<!-- https://www.w3schools.com/howto/howto_css_cards.asp -->
+
+<style>
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 200px;
+  height: 200px;
+  display: inline-flex;
+  position: relative;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
+
+.card span {
+    color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    z-index: 20;
+    background-color:rgba(0,0,0,0.5);
+}
+
+
+</style>
+
+{% if all_animals %}
+    <ul>
+    {% for animal in all_animals %}
+        <div class="card">
+            <img src="{{ animal.image_url }}" alt="Avatar" style="width:100%">
+            <span>{{ animal.name }}</span>
+        </div>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No animals are available.</p>
+{% endif %}
