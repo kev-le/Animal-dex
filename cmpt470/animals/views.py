@@ -6,6 +6,6 @@ from .models import Animal
 # Create your views here.
 
 def index(request):
-    all_animals = Animal.objects.order_by('-animal_breed')
+    all_animals = Animal.objects.order_by('-name')
     context = {'all_animals': all_animals}
     return render(request, 'animals/index.html', context)

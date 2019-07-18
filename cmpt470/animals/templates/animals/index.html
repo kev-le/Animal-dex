@@ -43,7 +43,7 @@
     {% for animal in all_animals %}
         <div class="card">
             <img src="{{ animal.image_url }}" alt="Avatar" style="width:100%">
-            <span>{{ animal.animal_breed }}</span>
+            <span>{{ animal.name }}</span>
         </div>
     {% endfor %}
     </ul>
