@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from .models import Animal
+
 # Create your views here.
 
 def index(request):
-    return HttpResponse("TODO: List of animals goes here")
+    all_animals = Animal.objects.order_by('-animal_breed')
+    context = {'all_animals': all_animals}
+    return render(request, 'animals/index.html', context)
