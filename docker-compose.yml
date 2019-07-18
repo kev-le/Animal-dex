@@ -2,16 +2,6 @@
 
 version: '3'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile-devel
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./:/code:ro
-    environment:
-      DJANGO_MODE: devel # look at os.environ['DJANGO_MODE'] to detect deployment
   db:
     image: "postgres:latest"
     volumes:
@@ -19,6 +9,18 @@ services:
     environment:
       POSTGRES_USER: project
       POSTGRES_PASSWORD: secret
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-devel
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/code:rw # readwrite for db migrations https://stackoverflow.com/questions/33992867/how-do-you-perform-django-database-migrations-when-using-docker-compose
+    environment:
+      DJANGO_MODE: devel # look at os.environ['DJANGO_MODE'] to detect deployment
+    depends_on:
+      - db
 volumes:
   static:
   db:
