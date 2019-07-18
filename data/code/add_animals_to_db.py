@@ -8,6 +8,8 @@
 # python manage.py shell
 # paste code below
 
+import csv
+
 from animals.models import Cat, Dog
 
 with open('../data/code/cats.csv') as f:
