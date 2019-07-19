@@ -1,7 +1,7 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Animal-dex Login{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
@@ -9,8 +9,18 @@
   <p><a href="{% url 'logout' %}">logout</a></p>
   <p><a href="{% url 'password_reset' %}">reset password</a></p>
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a> | 
-  <a href="{% url 'signup' %}">Sign up</a>
+  <h1 align="center">
+    <font size="6">You are not logged in</font>
+  </h1>
+  <body>
+    <br>
+    <br>
+    <br>
+  <p align="center">
+    <font size="6">
+      <a href="{% url 'login' %}">login</a> | <a href="{% url 'signup' %}">Sign up</a>
+    </font>
+  </p>
+  </body>
 {% endif %}
 {% endblock %}
