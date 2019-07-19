@@ -89,6 +89,8 @@ local_settings.py
 db.sqlite3
 __pycache__/
 
+cmpt470/sent_emails/*
+
 *.sqlite3
 
 data/code/.ipynb_checkpoints/
