@@ -90,6 +90,8 @@ db.sqlite3
 __pycache__/
 
 cmpt470/sent_emails/*
+!cmpt470/sent_emails/.gitkeep
+
 
 *.sqlite3
 
