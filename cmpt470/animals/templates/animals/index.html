@@ -1,61 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}Animal-dex{% endblock %}</title>
-  <style>
-  .card {
-    /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 200px;
-    height: 200px;
-    display: inline-flex;
-    position: relative;
-  }
-  /* On mouse-over, add a deeper shadow */
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
-  /* Add some padding inside the card container */
-  .container {
-    padding: 2px 16px;
-  }
-  .card span {
-      color: white;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      text-align: center;
-      z-index: 20;
-      background-color:rgba(0,0,0,0.5);
-  }
-  </style>
-</head>
-<body>
-  {% block content %}
-  <h2 align="right"><a href="{% url 'home' %}">Log in</a></h2>
-  <main>
-    <h1>All Animals</h1>
-    {% if all_animals %}
-        <ul>
-        {% for animal in all_animals %}
-            <div class="card">
-                <img src="{{ animal.image_url }}" alt="Avatar" style="width:100%">
-                <span>{{ animal.name }}</span>
-            </div>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No animals are available.</p>
-    {% endif %}
-    {% endblock %}
-  </main>
-</body>
-</html>
+{% extends 'base.html' %}
 
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
+{% endblock %}
 
+{% block title %}Animal-dex{% endblock %}
 
-<!-- Cards from w3schools -->
-<!-- https://www.w3schools.com/howto/howto_css_cards.asp -->
+{% block content %}
+
+<h2 align="right"><a href="{% url 'home' %}">Log in</a></h2>
+<h1>All Animals</h1>
+
+{% if all_animals %}
+    <ul>
+    {% for animal in all_animals %}
+        <div class="card">
+            <img src="{{ animal.image_url }}" alt="Avatar" style="width:100%">
+            <span>{{ animal.name }}</span>
+        </div>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No animals are available.</p>
+{% endif %}
+
+{% endblock %}
