@@ -7,7 +7,7 @@ from .models import Animal, Dog, Cat, Bird
 
 def index(request):
     animals = Animal.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'All Animals', 'search_action': '/animals/search'}
+    context = {'animals': animals, 'page_title': 'All Animals', 'search_action': '/animals/search', 'placeholder': 'Search for animals'}
     return render(request, 'animals/index.html', context)
 
 def detail(request, animal):
@@ -16,17 +16,17 @@ def detail(request, animal):
 
 def cats(request):
     animals = Cat.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'Cats', 'search_action': '/animals/cat/search'}
+    context = {'animals': animals, 'page_title': 'Cats', 'search_action': '/animals/cat/search', 'placeholder': 'Search for cats'}
     return render(request, 'animals/index.html', context)
 
 def dogs(request):
     animals = Dog.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'Dogs', 'search_action': '/animals/dog/search'}
+    context = {'animals': animals, 'page_title': 'Dogs', 'search_action': '/animals/dog/search', 'placeholder': 'Search for dogs'}
     return render(request, 'animals/index.html', context)
 
 def birds(request):
     animals = Bird.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'Birds', 'search_action': '/animals/bird/search'}
+    context = {'animals': animals, 'page_title': 'Birds', 'search_action': '/animals/bird/search', 'placeholder': 'Search for birds'}
     return render(request, 'animals/index.html', context)
 
 def cat_detail(request, slug):

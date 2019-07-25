@@ -13,7 +13,7 @@
 <h1>{{ page_title }}</h1>
 
 <form action="{{ search_action }}" method="get" class="search-form">
-    <input type="search" name="q" id="q" value="{{search_term}}" placeholder="Search for animals">
+    <input type="search" name="q" id="q" value="{{search_term}}" placeholder="{{ placeholder }}">
 </form>
 
 {% include "animals/display.html" %}
