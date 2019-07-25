@@ -1,0 +1,33 @@
+{% load static %}
+{% if animals %}
+    <ul>
+    {% for animal in animals %}
+        <!-- There is probably a better way to do this but idk how -->
+        {% if animal.cat %}
+            <a href= {% url 'cat_detail' animal.slug%}>
+        {% elif animal.dog %}
+            <a href= {% url 'dog_detail' animal.slug%}>
+        {% elif animal.bird %}
+            <a href= {% url 'bird_detail' animal.slug%}>
+        {% endif %}
+            <div class="animal-box">
+                <span class='animal-badge'>
+                    <!-- This too  -->
+                    {% if animal.cat %}
+                        <img src="{% static 'animals/cat-icon.png' %}" alt="Cat" style="width:100%">
+                    {% elif animal.dog %}
+                        <img src="{% static 'animals/dog-icon.png' %}" alt="Dog" style="width:100%">
+                    {% elif animal.bird %}
+                        <img src="{% static 'animals/bird-icon.png' %}" alt="Bird" style="width:100%">
+                    {% endif %}
+                </span>
+
+            <img src="{{ animal.image_url }}" alt="Avatar" style="width:100%">
+            <span class='animal-title'>{{ animal.name }}</span>
+          </div>
+        </a>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No animals are available.</p>
+{% endif %}

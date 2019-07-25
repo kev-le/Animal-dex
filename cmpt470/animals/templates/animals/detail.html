@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
+{% endblock %}
+
+{% block title %}Animal-dex{% endblock %}
+
+{% block content %}
+
+<h1>{{animal.name }}</h1>
+<img src="{{ animal.image_url }}" alt="Avatar" style='max-width: 500px'>
+<p> <b>Summary: </b> {{animal.summary}} </p>
+
+{% for field,value in animal_dict.items %}
+  {% if value %}  {# Only render info if the value is not empty #}
+    <p> <b>{{field}} </b> {{value}} </p>
+  {% endif %}
+{% endfor %}
+
+{% endblock %}
