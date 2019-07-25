@@ -7,21 +7,17 @@
 
 {% block title %}Animal-dex{% endblock %}
 
+
 {% block content %}
 
-<h1>All Animals</h1>
+<h1>{{ page_title }}</h1>
 
-{% if all_animals %}
-    <ul>
-    {% for animal in all_animals %}
-        <div class="animal-box">
-            <img src="{{ animal.image_url }}" alt="Avatar" style="width:100%">
-            <span>{{ animal.name }}</span>
-        </div>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No animals are available.</p>
-{% endif %}
+<form action="/animals/search" method="get" class="search-form">
+    <input type="search" name="q" id="q" value="{{search_term}}" placeholder="Search for animals">
+</form>
 
+{% include "animals/display.html" %}
+
+
+<div class='credits'>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 {% endblock %}
