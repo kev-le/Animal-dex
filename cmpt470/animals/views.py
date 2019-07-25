@@ -30,26 +30,17 @@ def birds(request):
     return render(request, 'animals/index.html', context)
 
 def cat_detail(request, slug):
-    try:
-        animal = Cat.objects.get(slug=slug)
-    except Cat.DoesNotExist:
-        return HttpResponseRedirect('/animals/') # Should probably be 404
+    animal = get_object_or_404(Cat, slug=slug)
 
     return detail(request, animal)
 
 def dog_detail(request, slug):
-    try:
-        animal = Dog.objects.get(slug=slug)
-    except Dog.DoesNotExist:
-        return HttpResponseRedirect('/animals/') # Should probably be 404
+    animal = get_object_or_404(Dog, slug=slug)
 
     return detail(request, animal)
 
 def bird_detail(request, slug):
-    try:
-        animal = Bird.objects.get(slug=slug)
-    except Bird.DoesNotExist:
-        return HttpResponseRedirect('/animals/') # Should probably be 404
+    animal = get_object_or_404(Bird, slug=slug)
 
     return detail(request, animal)
 
