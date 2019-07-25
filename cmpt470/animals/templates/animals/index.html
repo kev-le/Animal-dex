@@ -12,7 +12,7 @@
 
 <h1>{{ page_title }}</h1>
 
-<form action="/animals/search" method="get" class="search-form">
+<form action="{{ search_action }}" method="get" class="search-form">
     <input type="search" name="q" id="q" value="{{search_term}}" placeholder="Search for animals">
 </form>
 
