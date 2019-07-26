@@ -18,7 +18,7 @@ def index(request):
     except EmptyPage:
         animals = paginator.page(paginator.num_pages)
 
-    context = {'animals': animals, 'page_title': 'All Animals', 'type': 'all'}
+    context = {'animals': animals, 'page_title': 'All Animals', 'search_action': '/animals/search', 'placeholder': 'Search for animals'}
     return render(request, 'animals/index.html', context)
 
 def detail(request, animal):
@@ -37,7 +37,7 @@ def cats(request):
     except EmptyPage:
         animals = paginator.page(paginator.num_pages)
 
-    context = {'animals': animals, 'page_title': 'Cats', 'type': 'cats'}
+    context = {'animals': animals, 'page_title': 'Cats', 'search_action': '/animals/cat/search', 'placeholder': 'Search for cats'}
     return render(request, 'animals/index.html', context)
 
 def dogs(request):
@@ -52,7 +52,7 @@ def dogs(request):
     except EmptyPage:
         animals = paginator.page(paginator.num_pages)
 
-    context = {'animals': animals, 'page_title': 'Dogs', 'type': 'dogs'}
+    context = {'animals': animals, 'page_title': 'Dogs', 'search_action': '/animals/dog/search', 'placeholder': 'Search for dogs'}
     return render(request, 'animals/index.html', context)
 
 def birds(request):
@@ -67,30 +67,21 @@ def birds(request):
     except EmptyPage:
         animals = paginator.page(paginator.num_pages)
     
-    context = {'animals': animals, 'page_title': 'Birds', 'type': 'birds'}
+    context = {'animals': animals, 'page_title': 'Birds', 'search_action': '/animals/bird/search', 'placeholder': 'Search for birds'}
     return render(request, 'animals/index.html', context)
 
 def cat_detail(request, slug):
-    try:
-        animal = Cat.objects.get(slug=slug)
-    except Cat.DoesNotExist:
-        return HttpResponseRedirect('/animals/') # Should probably be 404
+    animal = get_object_or_404(Cat, slug=slug)
 
     return detail(request, animal)
 
 def dog_detail(request, slug):
-    try:
-        animal = Dog.objects.get(slug=slug)
-    except Dog.DoesNotExist:
-        return HttpResponseRedirect('/animals/') # Should probably be 404
+    animal = get_object_or_404(Dog, slug=slug)
 
     return detail(request, animal)
 
 def bird_detail(request, slug):
-    try:
-        animal = Bird.objects.get(slug=slug)
-    except Bird.DoesNotExist:
-        return HttpResponseRedirect('/animals/') # Should probably be 404
+    animal = get_object_or_404(Bird, slug=slug)
 
     return detail(request, animal)
 
@@ -101,20 +92,28 @@ def search(request):
     if search_term == '':   #if no search term, redirect to animal index page
         return HttpResponseRedirect('/animals/' + type)
     else:   #if search term exists, show search results
-        search_title = "Search " + type + " for '" + search_term + "'"
-        page_title = type
+        page_title = "Search for '" + search_term + "'"
 
-        # search by animal type
-        if type == 'all':
-            animals = Animal.objects.filter(name__icontains=search_term).order_by('name')[:10]  #icontains=case-insensitive
-        elif type == 'cats': 
-            animals = Cat.objects.filter(name__icontains=search_term).order_by('name')[:10]
-        elif type == 'dogs':
-            animals = Dog.objects.filter(name__icontains=search_term).order_by('name')[:10]
-        elif type == 'birds':
-            animals = Bird.objects.filter(name__icontains=search_term).order_by('name')[:10]
+        animals = Animal.objects.filter(name__icontains=search_term).order_by('name')  #icontains=case-insensitive
+        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
+        return render(request, 'animals/index.html', context)
+
+def specific_search(request, search_type):
+    search_term = request.GET['q']
+
+    if search_term == '':   #if no search term, redirect to animal index page
+        return HttpResponseRedirect('/animals/')
+    else:   #if search term exists, show search results
+        page_title = "Search for '" + search_term + "'"
+
+        if search_type == 'cat':
+            animals = Cat.objects.filter(name__icontains=search_term).order_by('name')
+        elif search_type == 'dog':
+            animals = Dog.objects.filter(name__icontains=search_term).order_by('name') 
+        elif search_type == 'bird':
+            animals = Bird.objects.filter(name__icontains=search_term).order_by('name')
         else:
-            animals = None
+            animals = Animal.objects.filter(name__icontains=search_term).order_by('name') 
         
-        context = {'animals': animals, 'search_term': search_term, 'search_title': search_title, 'type': type}
+        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
         return render(request, 'animals/index.html', context)

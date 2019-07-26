@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('search', views.search, name='search'),
     path('cat/', views.cats, name='cats'),
+    path('<str:search_type>/search', views.specific_search, name='specsearch'),
     path('dog/', views.dogs, name='dogs'),
     path('bird/', views.birds, name='birds'),
     path('cat/<slug:slug>', views.cat_detail, name='cat_detail'),

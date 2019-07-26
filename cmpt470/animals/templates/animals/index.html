@@ -10,11 +10,11 @@
 
 {% block content %}
 
-{% if search_title %}
-    <h1>{{ search_title }}</h1>
-{% else %}
-    <h1>{{ page_title }}</h1>
-{% endif %}
+<h1>{{ page_title }}</h1>
+
+<form action="{{ search_action }}" method="get" class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" name="q" id="q" value="{{search_term}}" placeholder="{{ placeholder }}">
+</form>
 
 {% include "animals/display.html" %}
 
