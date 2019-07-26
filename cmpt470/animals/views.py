@@ -1,12 +1,23 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Animal, Dog, Cat, Bird
 
 # Create your views here.
 
 def index(request):
-    animals = Animal.objects.order_by('name')[:75]
+    animal_list = Animal.objects.order_by('name')
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(animal_list, 20)
+    try:
+        animals = paginator.page(page)
+    except PageNotAnInteger:
+        animals = paginator.page(1)
+    except EmptyPage:
+        animals = paginator.page(paginator.num_pages)
+
     context = {'animals': animals, 'page_title': 'All Animals', 'type': 'all'}
     return render(request, 'animals/index.html', context)
 
@@ -15,17 +26,47 @@ def detail(request, animal):
     return render(request, 'animals/detail.html', context)
 
 def cats(request):
-    animals = Cat.objects.order_by('name')[:75]
+    animal_list = Cat.objects.order_by('name')
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(animal_list, 20)
+    try:
+        animals = paginator.page(page)
+    except PageNotAnInteger:
+        animals = paginator.page(1)
+    except EmptyPage:
+        animals = paginator.page(paginator.num_pages)
+
     context = {'animals': animals, 'page_title': 'Cats', 'type': 'cats'}
     return render(request, 'animals/index.html', context)
 
 def dogs(request):
-    animals = Dog.objects.order_by('name')[:75]
+    animal_list = Dog.objects.order_by('name')
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(animal_list, 20)
+    try:
+        animals = paginator.page(page)
+    except PageNotAnInteger:
+        animals = paginator.page(1)
+    except EmptyPage:
+        animals = paginator.page(paginator.num_pages)
+
     context = {'animals': animals, 'page_title': 'Dogs', 'type': 'dogs'}
     return render(request, 'animals/index.html', context)
 
 def birds(request):
-    animals = Bird.objects.order_by('name')[:75]
+    animal_list = Bird.objects.order_by('name')
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(animal_list, 20)
+    try:
+        animals = paginator.page(page)
+    except PageNotAnInteger:
+        animals = paginator.page(1)
+    except EmptyPage:
+        animals = paginator.page(paginator.num_pages)
+    
     context = {'animals': animals, 'page_title': 'Birds', 'type': 'birds'}
     return render(request, 'animals/index.html', context)
 
@@ -65,13 +106,13 @@ def search(request):
 
         # search by animal type
         if type == 'all':
-            animals = Animal.objects.filter(name__icontains=search_term).order_by('name')  #icontains=case-insensitive
+            animals = Animal.objects.filter(name__icontains=search_term).order_by('name')[:10]  #icontains=case-insensitive
         elif type == 'cats': 
-            animals = Cat.objects.filter(name__icontains=search_term).order_by('name')
+            animals = Cat.objects.filter(name__icontains=search_term).order_by('name')[:10]
         elif type == 'dogs':
-            animals = Dog.objects.filter(name__icontains=search_term).order_by('name')
+            animals = Dog.objects.filter(name__icontains=search_term).order_by('name')[:10]
         elif type == 'birds':
-            animals = Bird.objects.filter(name__icontains=search_term).order_by('name')
+            animals = Bird.objects.filter(name__icontains=search_term).order_by('name')[:10]
         else:
             animals = None
         
