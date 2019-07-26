@@ -60,7 +60,7 @@ def search(request):
     if search_term == '':   #if no search term, redirect to animal index page
         return HttpResponseRedirect('/animals/' + type)
     else:   #if search term exists, show search results
-        page_title = "Search for '" + search_term + "'"
+        page_title = "Search " + type + " for '" + search_term + "'"
 
         # search by animal type
         if type == 'All Animals':
