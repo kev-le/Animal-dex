@@ -46,9 +46,10 @@ def bird_detail(request, slug):
 
 def search(request):
     search_term = request.GET['q']
+    type = request.GET['type']
 
     if search_term == '':   #if no search term, redirect to animal index page
-        return HttpResponseRedirect('/animals/')
+        return HttpResponseRedirect('/animals/' + type)
     else:   #if search term exists, show search results
         page_title = "Search for '" + search_term + "'"
 
