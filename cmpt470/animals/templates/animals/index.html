@@ -10,7 +10,11 @@
 
 {% block content %}
 
-<h1>{{ page_title }}</h1>
+{% if search_title %}
+    <h1>{{ search_title }}</h1>
+{% else %}
+    <h1>{{ page_title }}</h1>
+{% endif %}
 
 {% include "animals/display.html" %}
 

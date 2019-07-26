@@ -7,7 +7,7 @@ from .models import Animal, Dog, Cat, Bird
 
 def index(request):
     animals = Animal.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'All Animals'}
+    context = {'animals': animals, 'page_title': 'All Animals', 'type': 'all'}
     return render(request, 'animals/index.html', context)
 
 def detail(request, animal):
@@ -16,17 +16,17 @@ def detail(request, animal):
 
 def cats(request):
     animals = Cat.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'Cats'}
+    context = {'animals': animals, 'page_title': 'Cats', 'type': 'cats'}
     return render(request, 'animals/index.html', context)
 
 def dogs(request):
     animals = Dog.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'Dogs'}
+    context = {'animals': animals, 'page_title': 'Dogs', 'type': 'dogs'}
     return render(request, 'animals/index.html', context)
 
 def birds(request):
     animals = Bird.objects.order_by('name')[:75]
-    context = {'animals': animals, 'page_title': 'Birds'}
+    context = {'animals': animals, 'page_title': 'Birds', 'type': 'birds'}
     return render(request, 'animals/index.html', context)
 
 def cat_detail(request, slug):
@@ -60,19 +60,20 @@ def search(request):
     if search_term == '':   #if no search term, redirect to animal index page
         return HttpResponseRedirect('/animals/' + type)
     else:   #if search term exists, show search results
-        page_title = "Search " + type + " for '" + search_term + "'"
+        search_title = "Search " + type + " for '" + search_term + "'"
+        page_title = type
 
         # search by animal type
-        if type == 'All Animals':
+        if type == 'all':
             animals = Animal.objects.filter(name__icontains=search_term).order_by('name')  #icontains=case-insensitive
-        elif type == 'Cats': 
+        elif type == 'cats': 
             animals = Cat.objects.filter(name__icontains=search_term).order_by('name')
-        elif type == 'Dogs':
+        elif type == 'dogs':
             animals = Dog.objects.filter(name__icontains=search_term).order_by('name')
-        elif type == 'Birds':
+        elif type == 'birds':
             animals = Bird.objects.filter(name__icontains=search_term).order_by('name')
         else:
             animals = None
         
-        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
+        context = {'animals': animals, 'search_term': search_term, 'search_title': search_title, 'type': type}
         return render(request, 'animals/index.html', context)
