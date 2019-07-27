@@ -87,14 +87,23 @@ def bird_detail(request, slug):
 
 def search(request):
     search_term = request.GET['q']
-    type = request.GET['type']
 
     if search_term == '':   #if no search term, redirect to animal index page
-        return HttpResponseRedirect('/animals/' + type)
+        return HttpResponseRedirect('/animals/')
     else:   #if search term exists, show search results
-        page_title = "Search for '" + search_term + "'"
+        page_title = "Search for All Animals: '" + search_term + "'"
 
-        animals = Animal.objects.filter(name__icontains=search_term).order_by('name')  #icontains=case-insensitive
+        animal_list = Animal.objects.filter(name__icontains=search_term).order_by('name')  #icontains=case-insensitive
+
+        page = request.GET.get('page', 1)
+        paginator = Paginator(animal_list, 20)
+        try:
+            animals = paginator.page(page)
+        except PageNotAnInteger:
+            animals = paginator.page(1)
+        except EmptyPage:
+            animals = paginator.page(paginator.num_pages)
+        
         context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
         return render(request, 'animals/index.html', context)
 
@@ -104,16 +113,25 @@ def specific_search(request, search_type):
     if search_term == '':   #if no search term, redirect to animal index page
         return HttpResponseRedirect('/animals/')
     else:   #if search term exists, show search results
-        page_title = "Search for '" + search_term + "'"
+        page_title = "Search for " + search_type + " '" + search_term + "'"
 
         if search_type == 'cat':
-            animals = Cat.objects.filter(name__icontains=search_term).order_by('name')
+            animal_list = Cat.objects.filter(name__icontains=search_term).order_by('name')
         elif search_type == 'dog':
-            animals = Dog.objects.filter(name__icontains=search_term).order_by('name') 
+            animal_list = Dog.objects.filter(name__icontains=search_term).order_by('name') 
         elif search_type == 'bird':
-            animals = Bird.objects.filter(name__icontains=search_term).order_by('name')
+            animal_list = Bird.objects.filter(name__icontains=search_term).order_by('name')
         else:
-            animals = Animal.objects.filter(name__icontains=search_term).order_by('name') 
+            animal_list = Animal.objects.filter(name__icontains=search_term).order_by('name') 
+
+        page = request.GET.get('page', 1)
+        paginator = Paginator(animal_list, 20)
+        try:
+            animals = paginator.page(page)
+        except PageNotAnInteger:
+            animals = paginator.page(1)
+        except EmptyPage:
+            animals = paginator.page(paginator.num_pages)
         
         context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
         return render(request, 'animals/index.html', context)

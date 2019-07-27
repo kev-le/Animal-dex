@@ -30,7 +30,7 @@
     </ul>
 
     {% if animals.has_next %}
-        <a class="infinite-more-link" href="?page={{ animals.next_page_number }}">More</a>
+        <a class="infinite-more-link" href="?q={{ search_term }}&page={{ animals.next_page_number }}">More</a>
     {% endif %}
 
     <div class="loading" style="display: none;">
