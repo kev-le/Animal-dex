@@ -17,6 +17,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'birds' %}">Birds</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all_spotted' %}">Spotted Animals</a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
@@ -31,7 +34,7 @@
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Signup</a>
+                        <a class="nav-link" href="{% url 'signup' %}">Signup</a>
                     </li>
                 {% endif %}
             </ul>

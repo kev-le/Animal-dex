@@ -1,6 +1,7 @@
 from django.template.defaultfilters import slugify
-
 from django.db import models
+
+from users.models import CustomUser
 
 # Create your models here.
 class Animal(models.Model):
@@ -54,3 +55,12 @@ class Bird(Animal):
     def display(self):
         return {"Conservation Status:": self.conservation_status, "Kingdom:": self.kingdom, "Phylum:": self.phylum,
                 "Scientific Class:": self. scientific_class, "Order": self.order, "Family:": self.family, "Binomial Name": self.binomial_name}
+
+class Has_Spotted(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'animal'], name='each user can only spot an animal once')
+        ]
