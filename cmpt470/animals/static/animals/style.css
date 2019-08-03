@@ -45,3 +45,17 @@ main {
     padding-top: 10px;
     font-size: 12px;
 }
+
+#search-box {
+    display: none;
+}
+
+/* nav bar collapse into menu button */
+@media screen and (max-width: 991.98px) {
+    #search-box-nav {
+        display: none;
+    }
+    #search-box {
+        display: inline;
+    }
+}
