@@ -12,10 +12,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/shortcuts/infinite.js"></script>
 
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
   {% block css %}
   {% endblock %}
 </head>
-<body>  
+<body>
   {% include 'navbar.html' %}
   <main>
     {% block content %}
