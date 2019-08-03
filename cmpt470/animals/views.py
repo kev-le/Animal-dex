@@ -66,7 +66,7 @@ def birds(request):
         animals = paginator.page(1)
     except EmptyPage:
         animals = paginator.page(paginator.num_pages)
-    
+
     context = {'animals': animals, 'page_title': 'Birds', 'search_action': '/animals/bird/search', 'placeholder': 'Search for birds'}
     return render(request, 'animals/index.html', context)
 
@@ -85,44 +85,23 @@ def bird_detail(request, slug):
 
     return detail(request, animal)
 
-def search(request):
+
+def search_by_term(request, search_type):
     search_term = request.GET['q']
 
     if search_term == '':   #if no search term, redirect to animal index page
         return HttpResponseRedirect('/animals/')
     else:   #if search term exists, show search results
-        page_title = "Search for All Animals: '" + search_term + "'"
-
-        animal_list = Animal.objects.filter(name__icontains=search_term).order_by('name')  #icontains=case-insensitive
-
-        page = request.GET.get('page', 1)
-        paginator = Paginator(animal_list, 20)
-        try:
-            animals = paginator.page(page)
-        except PageNotAnInteger:
-            animals = paginator.page(1)
-        except EmptyPage:
-            animals = paginator.page(paginator.num_pages)
-        
-        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
-        return render(request, 'animals/index.html', context)
-
-def specific_search(request, search_type):
-    search_term = request.GET['q']
-
-    if search_term == '':   #if no search term, redirect to animal index page
-        return HttpResponseRedirect('/animals/')
-    else:   #if search term exists, show search results
-        page_title = "Search for " + search_type + " '" + search_term + "'"
+        page_title = "Search for " + search_type + ": '" + search_term + "'"
 
         if search_type == 'cat':
             animal_list = Cat.objects.filter(name__icontains=search_term).order_by('name')
         elif search_type == 'dog':
-            animal_list = Dog.objects.filter(name__icontains=search_term).order_by('name') 
+            animal_list = Dog.objects.filter(name__icontains=search_term).order_by('name')
         elif search_type == 'bird':
             animal_list = Bird.objects.filter(name__icontains=search_term).order_by('name')
         else:
-            animal_list = Animal.objects.filter(name__icontains=search_term).order_by('name') 
+            animal_list = Animal.objects.filter(name__icontains=search_term).order_by('name')
 
         page = request.GET.get('page', 1)
         paginator = Paginator(animal_list, 20)
@@ -132,6 +111,38 @@ def specific_search(request, search_type):
             animals = paginator.page(1)
         except EmptyPage:
             animals = paginator.page(paginator.num_pages)
-        
-        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
+
+        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title, 'search_action': request.path}
         return render(request, 'animals/index.html', context)
+
+
+def index_search(request, search_type='', letter=''):
+
+    length = -len(letter)
+    search_action = request.path[:-len(letter) - 1] # hacky way to get search action from url
+    index_url = search_action[:-7]
+
+    if search_type == 'cat':
+        animal_list = Cat.objects.filter(name__istartswith=letter).order_by('name')
+        page_title = "Cats starting with '" + letter + "'"
+    elif search_type == 'dog':
+        animal_list = Dog.objects.filter(name__istartswith=letter).order_by('name')
+        page_title = "Dogs starting with '" + letter + "'"
+    elif search_type == 'bird':
+        animal_list = Bird.objects.filter(name__istartswith=letter).order_by('name')
+        page_title = "Birds starting with '" + letter + "'"
+    else:
+        animal_list = Animal.objects.filter(name__istartswith=letter).order_by('name')
+        page_title = "All animals starting with '" + letter + "'"
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(animal_list, 20)
+    try:
+        animals = paginator.page(page)
+    except PageNotAnInteger:
+        animals = paginator.page(1)
+    except EmptyPage:
+        animals = paginator.page(paginator.num_pages)
+
+    context = {'animals': animals, 'search_action': search_action, 'page_title': page_title, 'index_url' : index_url}
+    return render(request, 'animals/index.html', context)
