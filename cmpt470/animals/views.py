@@ -104,7 +104,7 @@ def search(request):
         except EmptyPage:
             animals = paginator.page(paginator.num_pages)
         
-        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
+        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title , 'search_action': request.path}
         return render(request, 'animals/index.html', context)
 
 def specific_search(request, search_type):
@@ -133,7 +133,7 @@ def specific_search(request, search_type):
         except EmptyPage:
             animals = paginator.page(paginator.num_pages)
         
-        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title}
+        context = {'animals': animals, 'search_term': search_term, 'page_title': page_title, 'search_action': request.path}
         return render(request, 'animals/index.html', context)
 
 
