@@ -20,6 +20,20 @@
   {% endif %}
 {% endfor %}
 
+{% if isSpotted %}
+  <p>You have spotted this animal</p>
+{% else %}
+  <p>Have you spotted this animal?</p>
+  {% if animal.cat %}
+      <a href= {% url 'spot' 'cat' animal.slug%}>
+  {% elif animal.dog %}
+      <a href= {% url 'spot' 'dog' animal.slug%}>
+  {% elif animal.bird %}
+      <a href= {% url 'spot' 'bird' animal.slug%}>
+  {% endif %}
+  <button class="spot-button" type="button">Spot</button>
+{% endif %}
+
 {% endblock %}
 
 {% block search %}

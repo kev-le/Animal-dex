@@ -12,5 +12,7 @@ urlpatterns = [
     path('bird/', views.birds, name='birds'),
     path('cat/<slug:slug>', views.cat_detail, name='cat_detail'),
     path('dog/<slug:slug>', views.dog_detail, name='dog_detail'),
-    path('bird/<slug:slug>', views.bird_detail, name='bird_detail')
+    path('bird/<slug:slug>', views.bird_detail, name='bird_detail'),
+    path('<str:animal_type>/<slug:slug>/spot', views.spot, name='spot'),
+    path('spotted', views.all_spotted, name='all_spotted'),
 ]

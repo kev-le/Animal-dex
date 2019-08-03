@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
-from .models import Animal, Dog, Cat, Bird
+from .models import Animal, Dog, Cat, Bird, Has_Spotted
 
 
 def display_results(request, animal_list, context):
@@ -36,7 +38,15 @@ def index(request):
 
 
 def detail(request, animal):
-    context = {'animal': animal, 'animal_dict': animal.display()}
+    if request.user.is_authenticated:
+        if Has_Spotted.objects.filter(user=request.user, animal=animal).exists():
+            isSpotted = True
+        else:
+            isSpotted = False
+    else:
+        isSpotted = False
+
+    context = {'animal': animal, 'animal_dict': animal.display(), 'isSpotted': isSpotted}
     return render(request, 'animals/detail.html', context)
 
 
@@ -87,6 +97,7 @@ def bird_detail(request, slug):
     return detail(request, animal)
 
 
+
 def search_by_term(request, search_type):
     search_term = request.GET['q']
 
@@ -111,6 +122,38 @@ def search_by_term(request, search_type):
         }
 
         return display_results(request, animal_list, context)
+
+@login_required(login_url='/users/login/')
+def spot(request, animal_type, slug):
+    animal = Animal.objects.get(slug=slug)
+
+    #Check if record already exists in Has_Spotted table
+    if not Has_Spotted.objects.filter(user=request.user, animal=animal).exists():
+        new_has_spotted = Has_Spotted(user=request.user, animal=animal)
+        new_has_spotted.save()
+
+    #Select which page to redirect to
+    if animal_type == 'cat':
+        return HttpResponseRedirect(reverse('cat_detail', args=[slug]))
+    elif animal_type == 'dog':
+        return HttpResponseRedirect(reverse('dog_detail', args=[slug]))
+    elif animal_type == 'bird':
+        return HttpResponseRedirect(reverse('bird_detail', args=[slug]))
+    else:
+        raise Http404("Animal does not exist")
+
+@login_required(login_url='/users/login/')
+def all_spotted(request):
+    spotted_animals = set()
+
+    for spotted in Has_Spotted.objects.filter(user=request.user).select_related('animal'):
+        # Without select_related(), this would make a database query for each
+        # loop iteration in order to fetch the related animal for each entry.
+        spotted_animals.add(spotted.animal)
+
+    context = {'animals': spotted_animals, 'page_title': 'Your Spotted Animals', 'search_action': '/animals/search', 'placeholder': 'Search for animals'}
+    return render(request, 'animals/index.html', context)
+
 
 
 
