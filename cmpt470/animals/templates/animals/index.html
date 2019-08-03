@@ -1,6 +1,22 @@
 {% extends 'animals/animal-base.html' %}
 
 {% load static %}
+
+{% block js %}
+    <script>
+        window.onload = function() {
+            alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+            searchAction = "{{search_action}}"
+            pageIndex = document.getElementById('page-index')
+            list = document.getElementById('page-index').getElementsByTagName('li');
+            for(i=1; i < list.length; i++) {
+                list[i].firstChild.href = searchAction + '/' + alphabet[i-1]
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
 {% endblock %}
@@ -9,15 +25,54 @@
 
 
 {% block content %}
+<div class="page-header">
+  <div class="float-left">
+    <h1>{{ page_title }}</h1>
+  </div>
+  <div class="float-right">
+    <p class="text-right">{{ animals_length }} Results Found</p>
+  </div>
+  <div class="clearfix"></div>
+</div>
 
-<h1>{{ page_title }}</h1>
+<nav>
+    <ul id="page-index" class="pagination pagination-sm justify-content-center flex-wrap">
+        <li class="page-item"><a class="page-link" href="{{index_url}}">All</a></li>
+        <li class="page-item"><a class="page-link" href="">A</a></li>
+        <li class="page-item"><a class="page-link" href="">B</a></li>
+        <li class="page-item"><a class="page-link" href="">C</a></li>
+        <li class="page-item"><a class="page-link" href="">D</a></li>
+        <li class="page-item"><a class="page-link" href="">E</a></li>
+        <li class="page-item"><a class="page-link" href="">F</a></li>
+        <li class="page-item"><a class="page-link" href="">G</a></li>
+        <li class="page-item"><a class="page-link" href="">H</a></li>
+        <li class="page-item"><a class="page-link" href="">I</a></li>
+        <li class="page-item"><a class="page-link" href="">J</a></li>
+        <li class="page-item"><a class="page-link" href="">K</a></li>
+        <li class="page-item"><a class="page-link" href="">L</a></li>
+        <li class="page-item"><a class="page-link" href="">M</a></li>
+        <li class="page-item"><a class="page-link" href="">N</a></li>
+        <li class="page-item"><a class="page-link" href="">O</a></li>
+        <li class="page-item"><a class="page-link" href="">P</a></li>
+        <li class="page-item"><a class="page-link" href="">Q</a></li>
+        <li class="page-item"><a class="page-link" href="">R</a></li>
+        <li class="page-item"><a class="page-link" href="">S</a></li>
+        <li class="page-item"><a class="page-link" href="">T</a></li>
+        <li class="page-item"><a class="page-link" href="">U</a></li>
+        <li class="page-item"><a class="page-link" href="">V</a></li>
+        <li class="page-item"><a class="page-link" href="">W</a></li>
+        <li class="page-item"><a class="page-link" href="">X</a></li>
+        <li class="page-item"><a class="page-link" href="">Y</a></li>
+        <li class="page-item"><a class="page-link" href="">Z</a></li>
+    </ul>
+</nav>
 
-<form action="{{ search_action }}" method="get" class="form-inline my-2 my-lg-0">
+<form id="search-box" class="form-inline" action="{{ search_action }}" method="get">
     <input class="form-control mr-sm-2" type="search" name="q" id="q" value="{{search_term}}" placeholder="{{ placeholder }}">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 
 {% include "animals/display.html" %}
-
 
 <div class='credits'>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 {% endblock %}
