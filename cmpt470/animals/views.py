@@ -150,8 +150,9 @@ def all_spotted(request):
         # Without select_related(), this would make a database query for each
         # loop iteration in order to fetch the related animal for each entry.
         spotted_animals.add(spotted.animal)
-
-    context = {'animals': spotted_animals, 'page_title': 'Your Spotted Animals', 'search_action': '/animals/search', 'placeholder': 'Search for animals'}
+    
+    animals_count = len(spotted_animals)
+    context = {'animals': spotted_animals, 'page_title': 'Your Spotted Animals', 'search_action': '/animals/search', 'placeholder': 'Search for animals', 'animals_length': animals_count}
     return render(request, 'animals/index.html', context)
 
 
