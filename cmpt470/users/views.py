@@ -29,11 +29,13 @@ class SignUpView(CreateView):
 @login_required(login_url='/users/login/')
 def profile(request):
     spotted_animals = set()
+    animals_length = 0
 
     for spotted in Has_Spotted.objects.filter(user=request.user).select_related('animal'):
         # Without select_related(), this would make a database query for each
         # loop iteration in order to fetch the related animal for each entry.
         spotted_animals.add(spotted.animal)
-    context = {'animals': spotted_animals}
+        animals_length += 1
+    context = {'animals': spotted_animals, 'animals_length': animals_length}
 
     return render(request, 'users/profile.html', context)
