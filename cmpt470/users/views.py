@@ -1,10 +1,15 @@
 # users/views.py
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.views.generic.edit import CreateView
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, get_object_or_404
 
+from django.contrib.auth.decorators import login_required
+
+from animals.models import Has_Spotted
 from .forms import CustomUserCreationForm
+from collections import OrderedDict
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -21,3 +26,15 @@ class SignUpView(CreateView):
         login(self.request, user)
 
         return HttpResponseRedirect(reverse_lazy('index'))
+
+@login_required(login_url='/users/login/')
+def profile(request):
+    spotted_animals = []
+
+    for spotted in Has_Spotted.objects.filter(user=request.user).select_related('animal').order_by('-id')[:7]:
+        # Without select_related(), this would make a database query for each
+        # loop iteration in order to fetch the related animal for each entry.
+        spotted_animals.append(spotted.animal)
+    context = {'animals': spotted_animals}
+
+    return render(request, 'users/profile.html', context)
