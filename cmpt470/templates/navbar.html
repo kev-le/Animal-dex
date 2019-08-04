@@ -17,9 +17,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'birds' %}">Birds</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all_spotted' %}">Spotted Animals</a>
-                </li>
                 <li id="search-box-nav">
                   <form class="form-inline" action="{{ search_action }}" method="get">
                       <input class="form-control mr-sm-2" type="search" name="q" id="q" value="{{search_term}}" placeholder="{{ placeholder }}">
@@ -31,7 +28,7 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Welcome, {{ user.username }} </a>
+                        <a class="nav-link" href="/users/profile/">{{ user.username|title }} </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
