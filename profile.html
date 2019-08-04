@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ user.username|title }}</h1>
+<hr>
+<h2>Recently Spotted Animals</h2>
+<div class="float-right">
+  <p class="text-right">{{ animals_length }} Results Found</p>
+</div>
+<div class="contain">
+{% if animals %}
+  <div class="row">
+    <div class="row__inner">
+      {% for animal in animals %}
+          {% if animal.cat %}
+              <a href= {% url 'cat_detail' animal.slug%}>
+          {% elif animal.dog %}
+              <a href= {% url 'dog_detail' animal.slug%}>
+          {% elif animal.bird %}
+              <a href= {% url 'bird_detail' animal.slug%}>
+          {% endif %}
+              <div class="tile">
+                  <span class='animal-badge'>
+                      {% if animal.cat %}
+                          <img src="{% static 'animals/cat-icon.png' %}" alt="Cat" style="width:100%">
+                      {% elif animal.dog %}
+                          <img src="{% static 'animals/dog-icon.png' %}" alt="Dog" style="width:100%">
+                      {% elif animal.bird %}
+                          <img src="{% static 'animals/bird-icon.png' %}" alt="Bird" style="width:100%">
+                      {% endif %}
+                  </span>
+                  <div class="tile__media">
+                    <img src="{% static 'images/'%}{{animal.slug}}.jpg" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'">
+                  </div>
+                  <div class="tile__title">
+                    {{ animal.name }}
+                  </div>
+              </div>
+            </a>
+      {% endfor %}
+      <a href="/animals/spotted">
+        <div class="tile">
+          <div class="tile__media">
+            <img src="{% static 'users/all3.png' %}" alt="Avatar">
+          </div>
+          <div class="tile__title">See All</div>
+        </div>
+      </a>
+    </div>
+  </div>
+{% else %}
+      <p>No animals are available.</p>
+  {% endif %}
+</div>
+
+<hr>
+<h2>Account Settings</h2>
+<p>
+    <a href="{% url 'logout' %}">Logout</a> | <a href="{% url 'password_reset' %}">Reset Password</a>
+</p>
+
+{% endblock %}
