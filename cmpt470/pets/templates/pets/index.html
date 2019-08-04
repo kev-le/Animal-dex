@@ -1,0 +1,37 @@
+{% extends 'animals/animal-base.html' %}
+
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
+{% endblock %}
+
+{% block title %}Animal-dex Pets{% endblock %}
+
+
+{% block content %}
+
+{% for pet in pets %}
+    <!-- just testing for now -->
+    <p>{{ pet.name }}</p>
+    <p>{{ pet.animal.cat }}</p>
+    <p>{{ pet.get_average_rating }}</p>
+
+    <div class="animal-box">
+        <span class='animal-badge'>
+            <!-- This too  -->
+            {% if pet.animal.cat %}
+                <img src="{% static 'animals/cat-icon.png' %}" alt="Cat" style="width:100%">
+            {% elif pet.animal.dog %}
+                <img src="{% static 'animals/dog-icon.png' %}" alt="Dog" style="width:100%">
+            {% elif pet.animal.bird %}
+                <img src="{% static 'animals/bird-icon.png' %}" alt="Bird" style="width:100%">
+            {% endif %}
+        </span>
+
+        <img src="{% static 'images/'%}{{pet.animal.slug}}.jpg" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%">
+        <span class='animal-title'>{{ pet.animal.name }}</span>
+    </div>
+{% endfor %}
+
+
+{% endblock %}
