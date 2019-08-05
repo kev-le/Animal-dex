@@ -19,7 +19,7 @@ def get_row(row):
     return None
 
 # Cats
-with open('../data/code/cat_update.csv') as f:
+with open('../data/code/cat.csv') as f:
     reader = csv.DictReader(f, delimiter=',')
     for row in reader:
         breed = get_row(row['breed'])
@@ -39,7 +39,7 @@ with open('../data/code/cat_update.csv') as f:
     
 # Dogs
 # (Paste after above)
-with open('../data/code/dog_update.csv') as f:
+with open('../data/code/dog.csv') as f:
     reader = csv.DictReader(f, delimiter=',')
     for row in reader:
         breed = get_row(row['breed'])
