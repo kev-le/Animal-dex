@@ -1,7 +1,7 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg fixed-top navbar-light  bg-light">
         <img type="image/png" src="{% static 'favicon.ico' %}"/>
-        <a class="navbar-brand" href="/">Animal-dex</a>
+        <a class="navbar-brand" href="/animals">Animal-dex</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -35,7 +35,7 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/profile/">{{ user.username|title }} </a>
+                        <a class="nav-link" href="/users/profile/">{{ user.username|title }} <i class="fa fa-user-circle" style="font-size:25px"></i> </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
