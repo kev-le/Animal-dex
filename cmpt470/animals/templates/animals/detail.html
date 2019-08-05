@@ -31,9 +31,18 @@
   {% elif animal.bird %}
       <a href= {% url 'spot' 'bird' animal.slug%}>
   {% endif %}
-  <button class="spot-button" type="button">Spot</button>
+  <button class="spot-button" type="button">Spot</button></a>
 {% endif %}
 
+{% if pets %}
+    <h4>User pets: </h4>
+    {% for pet in pets %}
+        <div class="animal-box">
+            <a href="{% url 'rate' pet.id%}" style="display:flex"><img src="{{ pet.user_image.url }}" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%;"></a>
+            <span class='animal-title'>{{ pet.name }}</span>
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block search %}
