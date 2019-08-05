@@ -161,10 +161,10 @@ def rate_view(request):
         else:
             # update last seen pet
             user = CustomUser.objects.get(id=request.user.id)
-            user.rate_index = int(petId) + 1
+            user.rate_index = pet.id + 1
 
             # make sure next pet actually exists
-            next_pet = Pet.objects.filter(id__gt=request.user.rate_index).order_by('id').first()
+            next_pet = Pet.objects.filter(id__gt=pet.id + 1).order_by('id').first()
             if not next_pet:
                 next_pet = Pet.objects.filter(id__gte=1).order_by('id').first()
                 user.rate_index = next_pet.id
