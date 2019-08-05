@@ -2,8 +2,10 @@
 # Instructions
 
 # docker-compose up
-# docker ps
-# docker exec -t -i <app_id> bash
+# docker exec -t -i cmpt470project_app_1 bash
+# if the name is different do
+#   docker ps 
+#   docker exec -t -i <app_id> bash
 # cd cmpt470
 # python manage.py shell
 # paste code below
