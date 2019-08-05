@@ -1,42 +1,7 @@
 ### development
 
-version: '3'
-services:
-  db:
-    image: "postgres:latest"
-    volumes:
-      - db:/var/lib/postgresql/data:rw
-    environment:
-      POSTGRES_USER: project
-      POSTGRES_PASSWORD: secret
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile-devel
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./:/code:rw # readwrite for db migrations https://stackoverflow.com/questions/33992867/how-do-you-perform-django-database-migrations-when-using-docker-compose
-    environment:
-      DJANGO_MODE: devel # look at os.environ['DJANGO_MODE'] to detect deployment
-    depends_on:
-      - db
-volumes:
-  static:
-  db:
-
-#### production
-
 # version: '3'
 # services:
-#   app:
-#     build:
-#       context: .
-#       dockerfile: Dockerfile-app
-#     volumes:
-#       - static:/static:rw
-#     environment:
-#       DJANGO_MODE: production
 #   db:
 #     image: "postgres:latest"
 #     volumes:
@@ -44,15 +9,50 @@ volumes:
 #     environment:
 #       POSTGRES_USER: project
 #       POSTGRES_PASSWORD: secret
-#   web:
+#   app:
 #     build:
 #       context: .
-#       dockerfile: Dockerfile-web
+#       dockerfile: Dockerfile-devel
 #     ports:
-#       - "8080:80"
+#       - "8000:8000"
 #     volumes:
-#       - static:/static:ro
-#
+#       - ./:/code:rw # readwrite for db migrations https://stackoverflow.com/questions/33992867/how-do-you-perform-django-database-migrations-when-using-docker-compose
+#     environment:
+#       DJANGO_MODE: devel # look at os.environ['DJANGO_MODE'] to detect deployment
+#     depends_on:
+#       - db
 # volumes:
 #   static:
 #   db:
+
+#### production
+
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-app
+    volumes:
+      - static:/static:rw
+    environment:
+      DJANGO_MODE: production
+  db:
+    image: "postgres:latest"
+    volumes:
+      - db:/var/lib/postgresql/data:rw
+    environment:
+      POSTGRES_USER: project
+      POSTGRES_PASSWORD: secret
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-web
+    ports:
+      - "8080:80"
+    volumes:
+      - static:/static:ro
+
+volumes:
+  static:
+  db:
