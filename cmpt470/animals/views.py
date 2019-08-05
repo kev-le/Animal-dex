@@ -146,6 +146,24 @@ def spot(request, animal_type, slug):
         raise Http404("Animal does not exist")
 
 @login_required(login_url='/users/login/')
+def unspot(request, animal_type, slug):
+    animal = Animal.objects.get(slug=slug)
+
+    #Check if record already exists in Has_Spotted table
+    if  Has_Spotted.objects.filter(user=request.user, animal=animal).exists():
+        Has_Spotted.objects.filter(user=request.user, animal=animal).delete()
+        
+    #Select which page to redirect to
+    if animal_type == 'cat':
+        return HttpResponseRedirect(reverse('cat_detail', args=[slug]))
+    elif animal_type == 'dog':
+        return HttpResponseRedirect(reverse('dog_detail', args=[slug]))
+    elif animal_type == 'bird':
+        return HttpResponseRedirect(reverse('bird_detail', args=[slug]))
+    else:
+        raise Http404("Animal does not exist")
+
+@login_required(login_url='/users/login/')
 def all_spotted(request):
     spotted_animals = set()
 
