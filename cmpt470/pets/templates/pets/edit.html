@@ -11,6 +11,7 @@
     <script>
         $(document).ready(function (){
             // get correct select list for animal type
+
             $(".breed_choice").hide();
             $(".breed_choice").prop('disabled', 'disabled');
 
@@ -36,8 +37,13 @@
                     $("#dog_breeds").removeAttr('disabled');
                 }
             });
-            $("select[name=animal_breed]").val("{{ pet.animal }}")
-            $("select[name=animal_breed]").val("{{ pet.animal }}")
+            $("select#animal_type").val("{{ type }}")
+            $(".breed_choice").hide();
+            $(".breed_choice").prop('disabled', 'disabled');
+            $("select#{{ type|lower }}_breeds").show();
+            $("select#{{ type|lower }}_breeds").removeAttr('disabled');
+            $("select#{{ type|lower }}_breeds").val("{{ pet.animal.id }}")
+
         });
 
     </script>
@@ -46,7 +52,7 @@
 
 {% block content %}
 <div class="animal-box float-left">
-  <img src="{{ pet.user_image.url }}" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%">
+  <img src="{{ pet.user_image.url }}" alt="Avatar" onerroranimal_breed="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%">
 </div>
 <h1>{{ pet.name|title }}</h1>
 {% if pet.get_average_rating %}
@@ -118,7 +124,7 @@
 
     <div class="form-group">
         <label for="pet_bio">Pet Bio</label>
-        <textarea class="form-control" id="pet_bio" name="pet_bio" rows="3" value="{{ pet.bio }}" placeholder="Short summary of your pet!"></textarea>
+        <textarea class="form-control" id="pet_bio" name="pet_bio" rows="3" value="{{ pet.bio }}" placeholder="Short summary of your pet!">{{ pet.bio }}</textarea>
     </div>
 
     <div class="form-group">

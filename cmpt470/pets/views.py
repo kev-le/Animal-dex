@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
-from .forms import create_pet_form
+from .forms import create_pet_form, edit_pet_form
 
 from .models import Pet, Rating
 from animals.models import Animal, Cat, Dog, Bird
@@ -49,11 +49,31 @@ def edit_pet(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
     if pet.user == request.user:
 
-        if request.method == 'POST':
-            return redirect('/')
-        else:
-            pass
+        if hasattr(pet.animal, "cat"):
+            type = "Cat"
+        elif hasattr(pet.animal, "dog"):
+            type = "Dog"
+        elif hasattr(pet.animal, "bird"):
+            type = "Bird"
 
+        if request.method == 'POST':
+            form = edit_pet_form(request.POST, request.FILES)
+            if form.is_valid():
+
+                if type == 'Dog':
+                    animal = Dog.objects.get(id=form.cleaned_data['animal_breed'])
+                elif type == 'Cat':
+                    animal = Cat.objects.get(id=form.cleaned_data['animal_breed'])
+                elif type == 'Bird':
+                    animal = Bird.objects.get(id=form.cleaned_data['animal_breed'])
+
+                pet.name = form.cleaned_data['pet_name']
+                pet.animal = animal
+                pet.bio = form.cleaned_data['pet_bio']
+
+                if form.data['pet_image']:
+                    pet.user_image = form.cleaned_data['pet_image']
+                pet.save()
 
         dogs = Dog.objects.order_by('name')
         cats = Cat.objects.order_by('name')
@@ -63,6 +83,7 @@ def edit_pet(request, pet_id):
             'dogs': dogs,
             'cats': cats,
             'birds':birds,
+            'type':type,
         }
         return render(request, 'pets/edit.html', context)
     else:
