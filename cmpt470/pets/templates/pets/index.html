@@ -77,7 +77,14 @@
         <div class="card-body">
             <h5 class="card-title">Meet {{ pet.name }}!</h5>
             <h6 class="card-subtitle mb-2 text-muted">Breed:</h5>
-            <p class="card-text">{{ pet.animal.name }}</p>
+            {% if pet.animal.cat %}
+                <a href="{% url 'cat_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
+            {% elif pet.animal.dog %}
+                <a href="{% url 'dog_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
+            {% elif pet.animal.bird %}
+                <a href="{% url 'bird_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
+            {% endif %}
+            <br><br>
             <h6 class="card-subtitle mb-2 text-muted">Bio:</h5>
             <p class="card-text">{{ pet.bio }}</p>
             <div class="card-footer">

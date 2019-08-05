@@ -41,7 +41,7 @@ def rating(request):
             
     return HttpResponse("Rating Submitted!")
 
-
+@login_required(login_url='/users/login')
 def add_pet(request):
     if request.method == 'POST':
         if (True): # TODO: check if post data is valid
@@ -80,6 +80,7 @@ def add_pet(request):
     
     return render(request, 'pets/add_pet.html', context)
 
+@login_required(login_url='/users/login')
 def rate(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
     context = { 'pet' : pet }
