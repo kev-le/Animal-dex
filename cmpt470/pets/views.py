@@ -5,6 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
+from django.http import HttpResponseForbidden
+
 from .forms import create_pet_form, edit_pet_form
 
 from .models import Pet, Rating
@@ -59,7 +61,7 @@ def edit_pet(request, pet_id):
         if request.method == 'POST':
             form = edit_pet_form(request.POST, request.FILES)
             if form.is_valid():
-
+                type = form.cleaned_data['animal_type']
                 if type == 'Dog':
                     animal = Dog.objects.get(id=form.cleaned_data['animal_breed'])
                 elif type == 'Cat':
@@ -87,7 +89,7 @@ def edit_pet(request, pet_id):
         }
         return render(request, 'pets/edit.html', context)
     else:
-        return redirect('/')
+        return HttpResponseForbidden()
 
 
 
