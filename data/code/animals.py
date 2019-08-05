@@ -274,7 +274,7 @@ for i in b.find_all(name='ul'):
         break
 
 bird_df = bird_df.drop_duplicates(subset = 'breed')
-bird_df.to_csv('birds.csv',index = False, header = True)
+bird_df.to_csv('bird.csv',index = False, header = True)
 
 #cat
 cat_df = pd.DataFrame(columns=['breed', 'summary', 'image', 'other_names', 'nicknames', 'origin'])
@@ -338,7 +338,7 @@ cat_df['nicknames'] = clean_nicknames(cat_df['nicknames'])
 cat_df['other_names'] = clean_other_names(cat_df['other_names'])
 
 cat_df = cat_df.drop_duplicates(subset='breed')
-cat_df.to_csv('cats.csv', index = False, header = True)
+cat_df.to_csv('cat.csv', index = False, header = True)
 
 #dog
 dog_df = pd.DataFrame(columns=['breed', 'summary', 'image','other_names','nicknames','origin','weight','height',
@@ -438,4 +438,4 @@ dog_df['color'] = clean_coat(dog_df['color'])
 dog_df['lifespan'] = clean_lifespan(dog_df['lifespan'])
 
 dog_df = dog_df.drop_duplicates(subset = 'breed').drop([0])
-dog_df.to_csv('dogs.csv', index = False, header = True)
+dog_df.to_csv('dog.csv', index = False, header = True)
