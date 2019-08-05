@@ -19,8 +19,8 @@ import json
 def pets_index(request):
 
     all_pets = sorted(Pet.objects.all(), key=lambda p: p.get_average_rating(), reverse=True)
-    top_pets = all_pets[:5] # top 5 featured pets, based on rating
-    recent_pets = all_pets[5:] # rest of pets
+    top_pets = all_pets[:8] # top 5 featured pets, based on rating
+    recent_pets = Pet.objects.all().order_by('-pk')[:10]
 
     context = {'top_pets': top_pets, 'recent_pets' : recent_pets}
     return render(request, 'pets/index.html', context)
@@ -164,7 +164,7 @@ def rate_view(request):
             user.rate_index = pet.id + 1
 
             # make sure next pet actually exists
-            next_pet = Pet.objects.filter(id__gt=pet.id + 1).order_by('id').first()
+            next_pet = Pet.objects.filter(id__gt=pet.id).order_by('id').first()
             if not next_pet:
                 next_pet = Pet.objects.filter(id__gte=1).order_by('id').first()
                 user.rate_index = next_pet.id
