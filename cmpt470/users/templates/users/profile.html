@@ -67,7 +67,7 @@
   <div class="row">
     <div class="row__inner">
       {% for pet in pets %}
-        <a href="">
+        <a href="/pets/edit/{{ pet.pk }}">
             <div class="tile">
                 <span class='animal-badge'>
                     {% if pet.animal.cat %}

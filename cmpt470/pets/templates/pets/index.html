@@ -4,46 +4,14 @@
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
     <style>
-
+      
         .card .animal-box{
             margin: auto;
             margin-top: 10px;
         }
 
-        .score {
-            display: block;
-            font-size: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .score-wrap {
-            display: inline-block;
-            position: relative;
-            height: 19px;
-        }
-
-        .score .stars-active {
-            color: #EEBD01;
-            position: relative;
-            z-index: 10;
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .score .stars-inactive {
-            color: grey;
-            position: absolute;
-            top: 0;
-            left: 0;
-            -webkit-text-stroke: initial;
-            /* overflow: hidden; */
-        }
-
-
     </style>
-      
+
 {% endblock %}
 
 {% block js %}
@@ -78,7 +46,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">Meet {{ pet.name }}!</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Breed:</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Breed:</h6>
             {% if pet.animal.cat %}
                 <a href="{% url 'cat_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
             {% elif pet.animal.dog %}
@@ -87,7 +55,7 @@
                 <a href="{% url 'bird_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
             {% endif %}
             <br><br>
-            <h6 class="card-subtitle mb-2 text-muted">Bio:</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Bio:</h6>
             <div class="card-text overflow-auto" style="min-height: 75px; max-height: 75px;">{{ pet.bio }}</div>
             <div class="card-footer">
             {% if pet.get_average_rating %}

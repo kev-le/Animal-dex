@@ -10,7 +10,8 @@ from .forms import create_pet_form
 from .models import Pet, Rating
 from animals.models import Animal, Cat, Dog, Bird
 
-# Create your views here.
+
+
 
 def pets_index(request):
 
@@ -23,7 +24,7 @@ def pets_index(request):
 @login_required(login_url='/users/login')
 def rating(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         rating = request.POST.get('rating', None)
         petId = request.POST.get('petId', None)
 
@@ -32,7 +33,7 @@ def rating(request):
         if not pet:
             return HttpResponse("Pet not found!", status=500)
         else:
-            print(request.POST)
+            # print(request.POST)
 
             # create new Rating
             rating = Rating.objects.create(user=request.user, pet=pet, scores=rating)
@@ -42,6 +43,32 @@ def rating(request):
             pet.save()
 
     return HttpResponse("Rating Submitted!")
+
+@login_required(login_url='/users/login')
+def edit_pet(request, pet_id):
+    pet = get_object_or_404(Pet, id=pet_id)
+    if pet.user == request.user:
+
+        if request.method == 'POST':
+            return redirect('/')
+        else:
+            pass
+
+
+        dogs = Dog.objects.order_by('name')
+        cats = Cat.objects.order_by('name')
+        birds = Bird.objects.order_by('name')
+        context = {
+            'pet' : pet,
+            'dogs': dogs,
+            'cats': cats,
+            'birds':birds,
+        }
+        return render(request, 'pets/edit.html', context)
+    else:
+        return redirect('/')
+
+
 
 @login_required(login_url='/users/login')
 def add_pet(request):
