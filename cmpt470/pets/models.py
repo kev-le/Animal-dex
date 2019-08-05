@@ -17,7 +17,14 @@ class Pet(models.Model):
     user_image = models.ImageField(upload_to='images/')
 
     def get_average_rating(self):
-        return self.rating_set.aggregate(Avg('scores')).get('scores__avg') # returns None if no ratings
+        avg = self.rating_set.aggregate(Avg('scores')).get('scores__avg') # returns None if no ratings
+        if avg:
+            return avg
+        else:
+            return 0
+
+    def get_number_of_ratings(self):
+        return self.rating_set.count()
 
     def __str__(self):
         return self.name
@@ -29,5 +36,3 @@ class Rating(models.Model):
         (1,1),(2,2),(3,3),(4,4),(5,5)
     )
     scores = models.IntegerField(choices=SCORE_CHOICES)
-
-

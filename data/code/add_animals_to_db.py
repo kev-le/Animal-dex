@@ -2,8 +2,10 @@
 # Instructions
 
 # docker-compose up
-# docker ps
-# docker exec -t -i <app_id> bash
+# docker exec -t -i cmpt470project_app_1 bash
+# if the name is different do
+#   docker ps 
+#   docker exec -t -i <app_id> bash
 # cd cmpt470
 # python manage.py shell
 # paste code below
@@ -19,7 +21,7 @@ def get_row(row):
     return None
 
 # Cats
-with open('../data/code/cat_update.csv') as f:
+with open('../data/code/cat.csv') as f:
     reader = csv.DictReader(f, delimiter=',')
     for row in reader:
         breed = get_row(row['breed'])
@@ -39,7 +41,7 @@ with open('../data/code/cat_update.csv') as f:
     
 # Dogs
 # (Paste after above)
-with open('../data/code/dog_update.csv') as f:
+with open('../data/code/dog.csv') as f:
     reader = csv.DictReader(f, delimiter=',')
     for row in reader:
         breed = get_row(row['breed'])

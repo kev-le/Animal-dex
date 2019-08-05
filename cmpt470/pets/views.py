@@ -5,19 +5,22 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
-from .forms import create_pet_form
+from django.http import HttpResponseForbidden
+
+from .forms import create_pet_form, edit_pet_form
 
 from .models import Pet, Rating
 from animals.models import Animal, Cat, Dog, Bird
 
-# Create your views here.
+
+
 
 def pets_index(request):
 
     all_pets = sorted(Pet.objects.all(), key=lambda p: p.get_average_rating(), reverse=True)
     top_pets = all_pets[:5] # top 5 featured pets, based on rating
     recent_pets = all_pets[5:] # rest of pets
-    
+
     context = {'top_pets': top_pets, 'recent_pets' : recent_pets}
     return render(request, 'pets/index.html', context)
 
@@ -25,7 +28,7 @@ def pets_index(request):
 @login_required(login_url='/users/login')
 def rating(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         rating = request.POST.get('rating', None)
         petId = request.POST.get('petId', None)
 
@@ -34,7 +37,7 @@ def rating(request):
         if not pet:
             return HttpResponse("Pet not found!", status=500)
         else:
-            print(request.POST)
+            # print(request.POST)
 
             # create new Rating
             rating = Rating.objects.create(user=request.user, pet=pet, scores=rating)
@@ -44,6 +47,53 @@ def rating(request):
             pet.save()
 
     return HttpResponse("Rating Submitted!")
+
+@login_required(login_url='/users/login')
+def edit_pet(request, pet_id):
+    pet = get_object_or_404(Pet, id=pet_id)
+    if pet.user == request.user:
+
+        if hasattr(pet.animal, "cat"):
+            type = "Cat"
+        elif hasattr(pet.animal, "dog"):
+            type = "Dog"
+        elif hasattr(pet.animal, "bird"):
+            type = "Bird"
+
+        if request.method == 'POST':
+            form = edit_pet_form(request.POST, request.FILES)
+            if form.is_valid():
+                type = form.cleaned_data['animal_type']
+                if type == 'Dog':
+                    animal = Dog.objects.get(id=form.cleaned_data['animal_breed'])
+                elif type == 'Cat':
+                    animal = Cat.objects.get(id=form.cleaned_data['animal_breed'])
+                elif type == 'Bird':
+                    animal = Bird.objects.get(id=form.cleaned_data['animal_breed'])
+
+                pet.name = form.cleaned_data['pet_name']
+                pet.animal = animal
+                pet.bio = form.cleaned_data['pet_bio']
+
+                if form.data['pet_image']:
+                    pet.user_image = form.cleaned_data['pet_image']
+                pet.save()
+
+        dogs = Dog.objects.order_by('name')
+        cats = Cat.objects.order_by('name')
+        birds = Bird.objects.order_by('name')
+        context = {
+            'pet' : pet,
+            'dogs': dogs,
+            'cats': cats,
+            'birds':birds,
+            'type':type,
+        }
+        return render(request, 'pets/edit.html', context)
+    else:
+        return HttpResponseForbidden()
+
+
 
 @login_required(login_url='/users/login')
 def add_pet(request):
