@@ -92,6 +92,8 @@ __pycache__/
 cmpt470/sent_emails/*
 !cmpt470/sent_emails/.gitkeep
 
+cmpt470/media/images/*
+!cmpt470/media/images/.gitkeep
 
 *.sqlite3
 
