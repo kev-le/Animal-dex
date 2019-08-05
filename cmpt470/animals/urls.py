@@ -14,5 +14,6 @@ urlpatterns = [
     path('dog/<slug:slug>', views.dog_detail, name='dog_detail'),
     path('bird/<slug:slug>', views.bird_detail, name='bird_detail'),
     path('<str:animal_type>/<slug:slug>/spot', views.spot, name='spot'),
+    path('<str:animal_type>/<slug:slug>/unspot', views.unspot, name='unspot'),
     path('spotted', views.all_spotted, name='all_spotted'),
 ]
