@@ -5,6 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
+from .forms import create_pet_form
+
 from .models import Pet, Rating
 from animals.models import Animal, Cat, Dog, Bird
 
@@ -13,7 +15,7 @@ from animals.models import Animal, Cat, Dog, Bird
 def pets_index(request):
 
     pets = Pet.objects.all()
-    
+
     context = {'pets': pets}
     return render(request, 'pets/index.html', context)
 
@@ -38,18 +40,21 @@ def rating(request):
             # create new rating for the pet
             pet.rating_set.add(rating)
             pet.save()
-            
+
     return HttpResponse("Rating Submitted!")
 
 @login_required(login_url='/users/login')
 def add_pet(request):
     if request.method == 'POST':
-        if (True): # TODO: check if post data is valid
-            type = request.POST['animal_type']
-            breed_id = request.POST['animal_breed']
-            pet_name = request.POST['pet_name']
-            pet_bio = request.POST['pet_bio']
-            pet_image = request.FILES['pet_image']
+
+        form = create_pet_form(request.POST, request.FILES)
+
+        if form.is_valid(): # TODO: check if post data is valid
+            type = form.cleaned_data['animal_type']
+            breed_id = form.cleaned_data['animal_breed']
+            pet_name = form.cleaned_data['pet_name']
+            pet_bio = form.cleaned_data['pet_bio']
+            pet_image = form.cleaned_data['pet_image']
 
             if type == 'Dog':
                 animal = Dog.objects.get(id=breed_id)
@@ -57,7 +62,7 @@ def add_pet(request):
                 animal = Cat.objects.get(id=breed_id)
             elif type == 'Bird':
                 animal = Bird.objects.get(id=breed_id)
-            
+
             pet = Pet.objects.create(
                 user=request.user,
                 animal=animal,
@@ -65,9 +70,11 @@ def add_pet(request):
                 bio=pet_bio,
                 user_image=pet_image
             )
-            pet.save()
-        return redirect('pets_index')
-    
+            # pet.save()
+            return redirect('pets_index')
+    else:
+        form = create_pet_form()
+
     dogs = Dog.objects.order_by('name')
     cats = Cat.objects.order_by('name')
     birds = Bird.objects.order_by('name')
@@ -75,9 +82,10 @@ def add_pet(request):
     context = {
         'dogs': dogs,
         'cats': cats,
-        'birds': birds
+        'birds': birds,
+        'form': form
     }
-    
+
     return render(request, 'pets/add_pet.html', context)
 
 @login_required(login_url='/users/login')

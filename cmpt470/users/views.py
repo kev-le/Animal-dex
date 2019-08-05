@@ -8,6 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from animals.models import Has_Spotted
+from pets.models import Pet, Rating
+
 from .forms import CustomUserCreationForm
 from collections import OrderedDict
 
@@ -35,6 +37,9 @@ def profile(request):
         # Without select_related(), this would make a database query for each
         # loop iteration in order to fetch the related animal for each entry.
         spotted_animals.append(spotted.animal)
-    context = {'animals': spotted_animals}
+
+    user_pets = Pet.objects.filter(user=request.user)
+
+    context = {'spotted': spotted_animals, 'pets': user_pets}
 
     return render(request, 'users/profile.html', context)

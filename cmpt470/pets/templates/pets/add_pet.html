@@ -44,7 +44,7 @@
 {% block content %}
 
 <h1>Add a Pet!</h1>
-
+<p>{{ form.errors }}</p>
 <form action="{% url 'add_pet' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
@@ -74,7 +74,7 @@
             {% endfor %}
         </select>
     </div>
-    
+
     <div class="form-group">
         <label for="pet_name">Pet Name</label>
         <input type="text" class="form-control" id="pet_name" name="pet_name" placeholder="Enter your pet name">
@@ -84,7 +84,7 @@
         <label for="pet_bio">Pet Bio</label>
         <textarea class="form-control" id="pet_bio" name="pet_bio" rows="3" placeholder="Short summary of your pet!"></textarea>
     </div>
-    
+
     <div class="form-group">
         <label for="pet_image">Upload Pet Image</label>
         <input type="file" class="form-control-file" id="pet_image" name="pet_image">
