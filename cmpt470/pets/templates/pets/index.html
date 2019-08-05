@@ -40,6 +40,8 @@
             -webkit-text-stroke: initial;
             /* overflow: hidden; */
         }
+
+
     </style>
       
 {% endblock %}
@@ -86,7 +88,7 @@
             {% endif %}
             <br><br>
             <h6 class="card-subtitle mb-2 text-muted">Bio:</h5>
-            <p class="card-text">{{ pet.bio }}</p>
+            <div class="card-text overflow-auto" style="min-height: 75px; max-height: 75px;">{{ pet.bio }}</div>
             <div class="card-footer">
             {% if pet.get_average_rating %}
                 <span class="score">
