@@ -1,0 +1,18 @@
+main {
+    padding: 20px;
+    padding-top: 65px;
+}
+
+#search-box {
+    display: none;
+}
+
+/* nav bar collapse into menu button */
+@media screen and (max-width: 991.98px) {
+    #search-box-nav {
+        display: none;
+    }
+    #search-box {
+        display: inline;
+    }
+}

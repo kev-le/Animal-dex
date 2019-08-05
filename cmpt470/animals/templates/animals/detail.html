@@ -3,6 +3,7 @@
 {% load static %}
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
+
 {% endblock %}
 
 {% block title %}Animal-dex{% endblock %}
@@ -18,6 +19,20 @@
     <p> <b>{{field}} </b> {{value}} </p>
   {% endif %}
 {% endfor %}
+
+{% if isSpotted %}
+  <p>You have spotted this animal</p>
+{% else %}
+  <p>Have you spotted this animal?</p>
+  {% if animal.cat %}
+      <a href= {% url 'spot' 'cat' animal.slug%}>
+  {% elif animal.dog %}
+      <a href= {% url 'spot' 'dog' animal.slug%}>
+  {% elif animal.bird %}
+      <a href= {% url 'spot' 'bird' animal.slug%}>
+  {% endif %}
+  <button class="spot-button" type="button">Spot</button>
+{% endif %}
 
 {% endblock %}
 

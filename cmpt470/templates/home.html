@@ -5,14 +5,21 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Logged in as: {{ user.username }}
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="{% url 'password_reset' %}">reset password</a></p>
+  <h1 align="center">
+    <font size="6">Logged in as: <a href="users/profile">{{ user.username }}</a></font>
+  </h1>
+    <br>
+    <br>
+    <br>
+  <p align="center">
+    <font size="6">
+      <a href="{% url 'logout' %}">Logout</a> | <a href="{% url 'password_reset' %}">Reset Password</a>
+    </font>
+  </p>
 {% else %}
   <h1 align="center">
     <font size="6">You are not logged in!</font>
   </h1>
-  <body>
     <br>
     <br>
     <br>
@@ -21,6 +28,5 @@
       <a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign up</a>
     </font>
   </p>
-  </body>
 {% endif %}
 {% endblock %}
