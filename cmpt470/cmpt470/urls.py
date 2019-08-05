@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import TemplateView # new
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('animals/', include('animals.urls')),
@@ -25,3 +27,5 @@ urlpatterns = [
     path('pets/', include('pets.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
