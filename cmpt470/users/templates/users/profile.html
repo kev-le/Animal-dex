@@ -16,10 +16,10 @@
 
 <div class="contain">
 
-{% if animals %}
+{% if spotted %}
   <div class="row">
     <div class="row__inner">
-      {% for animal in animals %}
+      {% for animal in spotted %}
           {% if animal.cat %}
               <a href= {% url 'cat_detail' animal.slug%}>
           {% elif animal.dog %}
@@ -61,6 +61,36 @@
   {% endif %}
 </div>
 
+<hr>
+<h2>Your Pets</h2>
+{% if pets %}
+  <div class="row">
+    <div class="row__inner">
+      {% for pet in pets %}
+        <a href="">
+            <div class="tile">
+                <span class='animal-badge'>
+                    {% if pet.animal.cat %}
+                        <img src="{% static 'animals/cat-icon.png' %}" alt="Cat" style="width:100%">
+                    {% elif pet.animal.dog %}
+                        <img src="{% static 'animals/dog-icon.png' %}" alt="Dog" style="width:100%">
+                    {% elif pet.animal.bird %}
+                        <img src="{% static 'animals/bird-icon.png' %}" alt="Bird" style="width:100%">
+                    {% endif %}
+                </span>
+                <img src="{{pet.user_image.url}}" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%;height:100%">
+                <div class="tile__title">
+                  {{ pet.name }}
+                </div>
+              </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+      <p>No pets are available.</p>
+  {% endif %}
+</div>
 <hr>
 <h2>Account Settings</h2>
 <p>

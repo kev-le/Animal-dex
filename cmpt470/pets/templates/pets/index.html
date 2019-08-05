@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
+    <style>
+
+        .card .animal-box{
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        .score {
+            display: block;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-wrap {
+            display: inline-block;
+            position: relative;
+            height: 19px;
+        }
+
+        .score .stars-active {
+            color: #EEBD01;
+            position: relative;
+            z-index: 10;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .score .stars-inactive {
+            color: grey;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-text-stroke: initial;
+            /* overflow: hidden; */
+        }
+
+
+    </style>
+      
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+{% block title %}Animal-dex Pets{% endblock %}
+
+
+{% block content %}
+{% csrf_token %}
+<h1> Featured Pets</h1>
+<a class="btn btn-primary" href="{% url 'add_pet' %}">+Add a Pet</a>
+<br>
+<br>
+
+<div class="row">
+{% for pet in top_pets %}
+    <div class="card" style="width: 18rem;">
+        <div class="animal-box card-img-top">
+            <span class='animal-badge'>
+                <!-- This too  -->
+                {% if pet.animal.cat %}
+                    <img src="{% static 'animals/cat-icon.png' %}" alt="Cat" style="width:100%">
+                {% elif pet.animal.dog %}
+                    <img src="{% static 'animals/dog-icon.png' %}" alt="Dog" style="width:100%">
+                {% elif pet.animal.bird %}
+                    <img src="{% static 'animals/bird-icon.png' %}" alt="Bird" style="width:100%">
+                {% endif %}
+            </span>
+            <a href="{% url 'rate' pet.id%}" style="display:flex"><img src="{{ pet.user_image.url }}" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%;"></a>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Meet {{ pet.name }}!</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Breed:</h5>
+            {% if pet.animal.cat %}
+                <a href="{% url 'cat_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
+            {% elif pet.animal.dog %}
+                <a href="{% url 'dog_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
+            {% elif pet.animal.bird %}
+                <a href="{% url 'bird_detail' pet.animal.slug%}" class="card-link">{{ pet.animal.slug }}</a>
+            {% endif %}
+            <br><br>
+            <h6 class="card-subtitle mb-2 text-muted">Bio:</h5>
+            <div class="card-text overflow-auto" style="min-height: 75px; max-height: 75px;">{{ pet.bio }}</div>
+            <div class="card-footer">
+            {% if pet.get_average_rating %}
+                <span class="score">
+                    <div class="score-wrap">
+                        <span class="stars-active" style="width: {% widthratio pet.get_average_rating 1 20 %}%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </span>
+                        <span class="stars-inactive">
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </span>
+            {% else %}
+                <span>Not yet rated</span><br>
+            {% endif %}
+            <a href="{% url 'rate' pet.id %}" class="card-link">Rate me!</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<br>
+<hr>
+<br>
+<h5>Recently Added Pets: </h5>
+
+{% if recent_pets %}
+    {% for pet in recent_pets %}
+        <div class="animal-box">
+            <a href="{% url 'rate' pet.id%}" style="display:flex"><img src="{{ pet.user_image.url }}" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%;"></a>
+            <span class='animal-title'>Rate Me!</span>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

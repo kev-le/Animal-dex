@@ -1,7 +1,12 @@
 from django.template.defaultfilters import slugify
 from django.db import models
-
 from users.models import CustomUser
+
+# to make a new model and migrations:
+# docker exec -it containerID bash
+# python3 ./cmpt470/manage.py makemigrations
+# python3 ./cmpt470/manage.py migrate
+# then docker-compose build && docker-compose up
 
 # Create your models here.
 class Animal(models.Model):

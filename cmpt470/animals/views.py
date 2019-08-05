@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .models import Animal, Dog, Cat, Bird, Has_Spotted
+from pets.models import Pet, Rating
 
 
 def display_results(request, animal_list, context):
@@ -46,7 +47,9 @@ def detail(request, animal):
     else:
         isSpotted = False
 
-    context = {'animal': animal, 'animal_dict': animal.display(), 'isSpotted': isSpotted}
+    pets = Pet.objects.filter(animal=animal)
+
+    context = {'animal': animal, 'animal_dict': animal.display(), 'isSpotted': isSpotted, 'pets': pets }
     return render(request, 'animals/detail.html', context)
 
 

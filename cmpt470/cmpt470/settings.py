@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['app', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'pets.apps.PetsConfig',
     'animals.apps.AnimalsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django_extensions',
     'users.apps.UsersConfig',
 ]
@@ -137,4 +139,9 @@ STATIC_ROOT = '/static'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
+    '/var/www/media/',
+    os.path.join(BASE_DIR, 'media'),
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
