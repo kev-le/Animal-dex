@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
+
+{% endblock %}
+{% block title %}Animal-dex Pets{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function (){
+            // get correct select list for animal type
+
+            $(".breed_choice").hide();
+            $(".breed_choice").prop('disabled', 'disabled');
+
+            type = $("select#animal_type").text();
+            $("#dog_breeds").show();
+            $("#dog_breeds").removeAttr('disabled');
+
+            $("select#animal_type").change(function(){
+                type = $(this).children("option:selected").val();
+                $(".breed_choice").hide();
+                $(".breed_choice").prop('disabled', 'disabled');
+
+                if(type == 'Cat') {
+                    $("#cat_breeds").show();
+                    $("#cat_breeds").removeAttr('disabled');
+
+                } else if (type == 'Bird') {
+                    $("#bird_breeds").show();
+                    $("#bird_breeds").removeAttr('disabled');
+
+                } else if (type == 'Dog') {
+                    $("#dog_breeds").show();
+                    $("#dog_breeds").removeAttr('disabled');
+                }
+            });
+            $("select#animal_type").val("{{ type }}")
+            $(".breed_choice").hide();
+            $(".breed_choice").prop('disabled', 'disabled');
+            $("select#{{ type|lower }}_breeds").show();
+            $("select#{{ type|lower }}_breeds").removeAttr('disabled');
+            $("select#{{ type|lower }}_breeds").val("{{ pet.animal.id }}")
+
+        });
+
+    </script>
+{% endblock %}
+
+
+{% block content %}
+<div class="animal-box float-left">
+  <img src="{{ pet.user_image.url }}" alt="Avatar" onerroranimal_breed="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%">
+</div>
+<h1>{{ pet.name|title }}</h1>
+{% if pet.get_average_rating %}
+    <span class="score">
+        <div class="score-wrap">
+            <span class="stars-active" style="width: {% widthratio pet.get_average_rating 1 20 %}%">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+            </span>
+            <span class="stars-inactive">
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+            </span>
+        </div>
+    </span>
+    <h6>Number of ratings: {{ pet.get_number_of_ratings }}</h6>
+{% else %}
+    <span>Not yet rated</span><br>
+{% endif %}
+
+<hr>
+<br>
+<br>
+<br>
+<br>
+
+
+<p>{{ form.errors }}</p>
+<form action="{% url 'edit' pet.pk %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="animal_type">Animal Type</label>
+        <select class="form-control" id="animal_type" name="animal_type">
+            <option>Dog</option>
+            <option>Cat</option>
+            <option>Bird</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Animal Breed</label>
+        <select class="form-control breed_choice" id="dog_breeds" name="animal_breed">
+            {% for dog in dogs %}
+                <option value="{{ dog.id }}">{{ dog.name }}</option>
+            {% endfor %}
+        </select>
+        <select class="form-control breed_choice" id="cat_breeds" name="animal_breed">
+            {% for cat in cats %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+        <select class="form-control breed_choice" id="bird_breeds" name="animal_breed">
+            {% for bird in birds %}
+                <option value="{{ bird.id }}">{{ bird.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="pet_name">Pet Name</label>
+        <input type="text" class="form-control" id="pet_name" name="pet_name" value="{{ pet.name }}">
+    </div>
+
+    <div class="form-group">
+        <label for="pet_bio">Pet Bio</label>
+        <textarea class="form-control" id="pet_bio" name="pet_bio" rows="3" value="{{ pet.bio }}" placeholder="Short summary of your pet!">{{ pet.bio }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="pet_image">New Pet Image</label>
+        <input type="file" class="form-control-file" id="pet_image" name="pet_image">
+    </div>
+
+    <button class="btn btn-primary" type="submit">Save Changes</button>
+</form>
+{% endblock %}
