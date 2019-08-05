@@ -72,7 +72,6 @@ def add_pet(request):
                 bio=pet_bio,
                 user_image=pet_image
             )
-            # pet.save()
             return redirect('pets_index')
     else:
         form = create_pet_form()
