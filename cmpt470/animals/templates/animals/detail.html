@@ -22,6 +22,7 @@
 
 {% if isSpotted %}
   <p>You have spotted this animal</p>
+  <p>Do you want to unspot this animal?</p>
   {% if animal.cat %}
       <a href= {% url 'unspot' 'cat' animal.slug%}>
   {% elif animal.dog %}
