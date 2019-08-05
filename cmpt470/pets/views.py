@@ -12,6 +12,7 @@ from .forms import create_pet_form, edit_pet_form
 from .models import Pet, Rating
 from animals.models import Animal, Cat, Dog, Bird
 
+from users.models import CustomUser
 
 
 
@@ -144,3 +145,35 @@ def rate(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
     context = { 'pet' : pet }
     return render(request, 'pets/rate.html', context)
+
+
+@login_required(login_url='/animals')
+def rate_view(request):
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating', None)
+        petId = request.POST.get('petId', None)
+
+        # get associated pet
+        pet = Pet.objects.get(id=petId)
+        if not pet:
+            return HttpResponse("Pet not found!", status=500)
+        else:
+            user = CustomUser.objects.get(id=request.user.id)
+            user.rate_index += 1
+
+            if user.rate_index >= Pet.objects.count():
+                user.rate_index = 1
+                
+            user.save()
+            # create new Rating
+            rating = Rating.objects.create(user=request.user, pet=pet, scores=rating)
+
+            # create new rating for the pet
+            pet.rating_set.add(rating)
+            pet.save()
+
+    new_pet = get_object_or_404(Pet, id=request.user.rate_index)
+
+    context = { 'pet' : new_pet }
+    return render(request, 'pets/rate_view.html', context)
