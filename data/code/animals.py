@@ -192,7 +192,9 @@ done = False
 for i in b.find_all(name='ul'):
     for j in i.find_all(name='li'):        
         #get the summary of each breed
+        # loop = True
         for link in j.find_all(name='a', href=True, title=True):
+            # while loop:
             try:
                 breed = link['title']
                 if breed == 'Portal:Birds':
@@ -251,7 +253,6 @@ for i in b.find_all(name='ul'):
                 
                 try:
                     image = parse.data['image'][0]['url']
-                    #image = image[0] + '//' + image[2] + '/' + image[3] + '/' + image[4] + '/thumb/' + image[5] + '/' + image[6] +  '/' + image[7] + '/1200px-' + image[7]
                 except:
                     image = 'https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'
                 summary = wikipedia.WikipediaPage(breed).summary
@@ -261,16 +262,19 @@ for i in b.find_all(name='ul'):
                                           'phylum': phylum, 'order': order, 'family': family, 
                                           'binomial_name': binomial_name},
                                          ignore_index = True)
+                # loop = False
+
             except:
                 print('Sleeping until reconnect')
-                time.sleep(3)
+                time.sleep(5)
+
         if(done):
             break
     if(done):
         break
 
 bird_df = bird_df.drop_duplicates(subset = 'breed')
-bird_df.to_csv('bird.csv',index = True, header = True)
+bird_df.to_csv('birds.csv',index = False, header = True)
 
 #cat
 cat_df = pd.DataFrame(columns=['breed', 'summary', 'image', 'other_names', 'nicknames', 'origin'])
@@ -282,11 +286,14 @@ b = BeautifulSoup(html.text, 'lxml')
 
 # get to the table on the page
 for i in b.find_all(name='table', class_='wikitable sortable'):
-    for j in i.find_all(name='tr'):        
+    for j in i.find_all(name='tr'):
         #get the summary of each breed
         for k in j.find_all(name='th'):
+            
             # get within that cell to just get the words
             for link in k.find_all('a', href=True):
+                # loop = True
+                # while loop:
                 try:
                     if(re.match('^#', link['href'])):
                         continue
@@ -311,8 +318,7 @@ for i in b.find_all(name='table', class_='wikitable sortable'):
                             origin = None
                             
                         try:
-                            image = parse.data['image'][0]['url'].split('/')
-                            #image = image[0] + '//' + image[2] + '/' + image[3] + '/' + image[4] + '/thumb/' + image[5] + '/' + image[6] +  '/' + image[7] + '/1200px-' + image[7]
+                            image = parse.data['image'][0]['url']
                         except:
                             image = 'https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'
                         
@@ -321,17 +327,18 @@ for i in b.find_all(name='table', class_='wikitable sortable'):
                         cat_df = cat_df.append({'breed':breed, 'summary': summary, 'image':image,
                                                'other_names': other_names, 'nicknames': nicknames,
                                                 'origin': origin}, ignore_index = True)
+                        # loop = False
                     
                 except:
                     print('Sleeping until reconnect')
-                    time.sleep(3)
+                    time.sleep(5)
 
 cat_df['origin'] = clean_origin(cat_df['origin'])
 cat_df['nicknames'] = clean_nicknames(cat_df['nicknames'])
 cat_df['other_names'] = clean_other_names(cat_df['other_names'])
 
 cat_df = cat_df.drop_duplicates(subset='breed')
-cat_df.to_csv('cat.csv', index = True, header = True)
+cat_df.to_csv('cats.csv', index = False, header = True)
 
 #dog
 dog_df = pd.DataFrame(columns=['breed', 'summary', 'image','other_names','nicknames','origin','weight','height',
@@ -344,7 +351,10 @@ b = BeautifulSoup(html.text, 'lxml')
 
 # get to the table on the page
 for i in b.find_all(name='table', class_='wikitable sortable'):
+    
     for j in i.find_all(name='tr'):
+        # loop = True
+        # while loop:
         try:    
             if(j.find('a') == None):
                 continue
@@ -403,7 +413,6 @@ for i in b.find_all(name='table', class_='wikitable sortable'):
                 
                 try:
                     image = parse.data['image'][0]['url']
-                    # image = image[0] + '//' + image[2] + '/' + image[3] + '/' + image[4] + '/thumb/' + image[5] + '/' + image[6] +  '/' + image[7] + '/1200px-' + image[7]
                 except:
                     image = 'https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'
                 
@@ -413,9 +422,11 @@ for i in b.find_all(name='table', class_='wikitable sortable'):
                                         'nicknames': nicknames, 'origin': origin, 'weight': weight,
                                         'height': height, 'coat': coat, 'color': color, 'lifespan': lifespan},
                                        ignore_index = True)
+                # loop = False
+
         except:
             print('Sleeping until reconnect')
-            time.sleep(3)
+            time.sleep(5)
 
 dog_df['origin'] = clean_origin(dog_df['origin'])
 dog_df['nicknames'] = clean_nicknames(dog_df['nicknames'])
@@ -427,4 +438,4 @@ dog_df['color'] = clean_coat(dog_df['color'])
 dog_df['lifespan'] = clean_lifespan(dog_df['lifespan'])
 
 dog_df = dog_df.drop_duplicates(subset = 'breed').drop([0])
-dog_df.to_csv('dog.csv', index = True, header = True)
+dog_df.to_csv('dogs.csv', index = False, header = True)

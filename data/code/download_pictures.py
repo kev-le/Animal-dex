@@ -8,7 +8,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 
-output = "./downloads/"
+output = "./images/"
 
 thumb_size = 200,200
 
