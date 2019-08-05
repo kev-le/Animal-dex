@@ -190,7 +190,7 @@
             <span class='animal-title'>{{ pet.name }}</span>
         </div>
 
-        <h4>Current Rating: {{ pet.get_average_rating|floatformat:2|intcomma }} / 5 </h4>
+        <h4>Current Rating: {{ pet.get_average_rating|floatformat:2|intcomma }} / 5   ({{ pet.get_number_of_ratings }} ratings)</h4>
 
         <hr>
 

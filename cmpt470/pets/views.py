@@ -18,7 +18,7 @@ import json
 
 def pets_index(request):
 
-    all_pets = sorted(Pet.objects.all(), key=lambda p: p.get_average_rating(), reverse=True)
+    all_pets = sorted(Pet.objects.all(), key=lambda p: (p.get_average_rating() * p.get_number_of_ratings()) , reverse=True)
     top_pets = all_pets[:5] # top 5 featured pets, based on rating
     recent_pets = all_pets[5:] # rest of pets
 
