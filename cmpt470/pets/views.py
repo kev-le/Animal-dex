@@ -147,7 +147,7 @@ def rate(request, pet_id):
     return render(request, 'pets/rate.html', context)
 
 
-@login_required(login_url='/animals')
+@login_required(login_url='/home')
 def rate_view(request):
 
     if request.method == 'POST':
@@ -161,7 +161,7 @@ def rate_view(request):
         else:
             # update last seen pet
             user = CustomUser.objects.get(id=request.user.id)
-            user.rate_index = pet.id + 1
+            user.rate_index = pet.id
 
             # make sure next pet actually exists
             next_pet = Pet.objects.filter(id__gt=pet.id).order_by('id').first()
