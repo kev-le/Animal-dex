@@ -61,7 +61,7 @@
 <br>
 
 <div class="row">
-{% for pet in pets %}
+{% for pet in top_pets %}
     <div class="card" style="width: 18rem;">
         <div class="animal-box card-img-top">
             <span class='animal-badge'>
@@ -118,5 +118,18 @@
     </div>
 {% endfor %}
 </div>
+<br>
+<hr>
+<br>
+<h5>Recently Added Pets: </h5>
+
+{% if recent_pets %}
+    {% for pet in recent_pets %}
+        <div class="animal-box">
+            <a href="{% url 'rate' pet.id%}" style="display:flex"><img src="{{ pet.user_image.url }}" alt="Avatar" onerror="this.src='https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'" style="width:100%;"></a>
+            <span class='animal-title'>Rate Me!</span>
+        </div>
+    {% endfor %}
+{% endif %}
 
 {% endblock %}

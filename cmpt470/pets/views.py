@@ -14,9 +14,11 @@ from animals.models import Animal, Cat, Dog, Bird
 
 def pets_index(request):
 
-    pets = Pet.objects.all()
-
-    context = {'pets': pets}
+    all_pets = sorted(Pet.objects.all(), key=lambda p: p.get_average_rating(), reverse=True)
+    top_pets = all_pets[:5] # top 5 featured pets, based on rating
+    recent_pets = all_pets[5:] # rest of pets
+    
+    context = {'top_pets': top_pets, 'recent_pets' : recent_pets}
     return render(request, 'pets/index.html', context)
 
 # POST for rating
