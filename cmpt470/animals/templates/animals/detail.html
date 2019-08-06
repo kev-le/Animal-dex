@@ -30,7 +30,7 @@
   {% elif animal.bird %}
       <a href= {% url 'unspot' 'bird' animal.slug%}>
   {% endif %}
-  <button class="unspot-button" type="button">Unspot</button></a>
+  <button class="btn btn-secondary unspot-button" type="button">Unspot</button></a>
 {% else %}
   <p>Have you spotted this animal?</p>
   {% if animal.cat %}
@@ -40,7 +40,7 @@
   {% elif animal.bird %}
       <a href= {% url 'spot' 'bird' animal.slug%}>
   {% endif %}
-  <button class="spot-button" type="button">Spot</button></a>
+  <button class="btn btn-primary spot-button" type="button">Spot</button></a>
 {% endif %}
 
 <br>
