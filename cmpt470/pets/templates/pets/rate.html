@@ -7,50 +7,50 @@
 <style>
     /* taken from https://codepen.io/depy/pen/vEWWdw */
     .text-center {text-align:center;}
-    
+
     .success-box {
         margin:50px 0;
         padding:10px 10px;
         border:1px solid #eee;
         background:#f9f9f9;
     }
-    
+
     .success-box img {
         margin-right:10px;
         display:inline-block;
         vertical-align:top;
     }
-    
+
     .success-box > div {
         vertical-align:top;
         display:inline-block;
         color:#888;
     }
-    
+
     /* Rating Star Widgets Style */
     .rating-stars ul {
         list-style-type:none;
         padding:0;
-        
+
         -moz-user-select:none;
         -webkit-user-select:none;
     }
     .rating-stars ul > li.star {
         display:inline-block;
-        
+
     }
-    
+
     /* Idle State of the stars */
     .rating-stars ul > li.star > i.fa {
         font-size:2.5em; /* Change the size of the stars */
         color:#ccc; /* Color on idle state */
     }
-    
+
     /* Hover state of the stars */
     .rating-stars ul > li.star.hover > i.fa {
         color:#FFCC36;
     }
-    
+
     /* Selected state of the stars */
     .rating-stars ul > li.star.selected > i.fa {
         color:#FF912C;
@@ -78,7 +78,7 @@
             /* 1. Visualizing things on Hover - See next part for action on click */
             $('#stars li').on('mouseover', function(){
                 var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
-            
+
                 // Now highlight all the stars that's not after the current hovered star
                 $(this).parent().children('li.star').each(function(e){
                 if (e < onStar) {
@@ -88,27 +88,27 @@
                     $(this).removeClass('hover');
                 }
                 });
-                
+
             }).on('mouseout', function(){
                 $(this).parent().children('li.star').each(function(e){
                 $(this).removeClass('hover');
                 });
             });
-            
-            
+
+
             /* 2. Action to perform on click */
             $('#stars li').on('click', function(){
                 var onStar = parseInt($(this).data('value'), 10); // The star currently selected
                 var stars = $(this).parent().children('li.star');
-                
+
                 for (i = 0; i < stars.length; i++) {
                 $(stars[i]).removeClass('selected');
                 }
-                
+
                 for (i = 0; i < onStar; i++) {
                 $(stars[i]).addClass('selected');
                 }
-                
+
                 // JUST RESPONSE (Not needed)
                 var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
                 var msg = "";
@@ -119,15 +119,15 @@
                     msg = "We will improve ourselves. You rated this " + ratingValue + " stars.";
                 }
                 responseMessage(msg);
-    
+
                 // POST RESPONSE AJAX
                 var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-    
+
                 function csrfSafeMethod(method) {
                     // these HTTP methods do not require CSRF protection
                     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
                 }
-    
+
                 $.ajaxSetup({
                     beforeSend: function (xhr, settings) {
                         // if not safe, set csrftoken
@@ -136,7 +136,7 @@
                         }
                     }
                 });
-    
+
                 $.ajax({
                     type: 'post',
                     url: "{% url 'rating' %}",
@@ -150,19 +150,19 @@
                         // alert(status);
                     },
                     error: function (res) {
-                        // alert(res.status);                                                                                                                          
+                        // alert(res.status);
                     }
                 });
-                
+
             });
-            
-            
+
+
         });
-    
-    
+
+
         function responseMessage(msg) {
             $('.success-box').show(200);
-            $('.success-box').fadeIn(300);  
+            $('.success-box').fadeIn(300);
             $('.success-box div.text-message').html("<span>" + msg + "</span>");
         }
     </script>
@@ -190,7 +190,7 @@
             <span class='animal-title'>{{ pet.name }}</span>
         </div>
 
-        <h4>Current Rating: {{ pet.get_average_rating|intcomma }} / 5 </h4>
+        <h4>Current Rating: {{ pet.get_average_rating|floatformat:2|intcomma }} / 5   ({{ pet.get_number_of_ratings }} ratings)</h4>
 
         <hr>
 
@@ -198,7 +198,7 @@
         <h5>{{ pet.bio }} </h5>
 
         <hr>
-                
+
         <section class='rating-widget'>
             <!-- Rating Stars Box -->
             <div class='rating-stars text-center'>
@@ -220,7 +220,7 @@
                 </li>
             </ul>
             </div>
-            
+
             <div class='success-box' style="display: none">
                 <div class='clearfix'></div>
                 <img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K'/>
@@ -231,9 +231,9 @@
 
         <a href="{% url 'pets_index' %}">Back to Pets</a>
     </div>
-    
-        
-        
+
+
+
 </div>
 
 
