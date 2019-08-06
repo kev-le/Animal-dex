@@ -45,7 +45,7 @@ class Dog(Animal):
 
     def display(self):
         return {"Other Names:": self.other_names, "Nicknames:": self.nicknames, "Origin:": self.origin,
-                "Weight:": self. weight, "Height": self.height, "Coat:": self. coat, "Color:": self. color,
+                "Weight:": self. weight, "Height:": self.height, "Coat:": self. coat, "Color:": self. color,
                 "Lifespan:": self.lifespan}
 
 class Bird(Animal):
