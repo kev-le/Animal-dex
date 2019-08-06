@@ -3,15 +3,7 @@
 {% load static %}
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'animals/style.css' %}">
-    <style>
-
-        .card .animal-box{
-            margin: auto;
-            margin-top: 10px;
-        }
-
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="{% static 'pets/style.css' %}">
 {% endblock %}
 
 {% block js %}
@@ -29,9 +21,9 @@
 <br>
 <br>
 
-<div class="row">
+<div class="row pets-row">
 {% for pet in top_pets %}
-    <div class="card" style="width: 18rem;">
+    <div class="card pets-card">
         <div class="animal-box card-img-top">
             <span class='animal-badge'>
                 <!-- This too  -->
