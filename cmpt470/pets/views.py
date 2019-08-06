@@ -143,7 +143,14 @@ def add_pet(request):
 @login_required(login_url='/users/login')
 def rate(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
-    context = { 'pet' : pet }
+
+    # check if user has rated this pet 
+    if not Rating.objects.filter(user=request.user, pet=pet):
+        user_already_rated = False
+    else:
+        user_already_rated = True
+
+    context = { 'pet' : pet , 'user_already_rated' : user_already_rated }
     return render(request, 'pets/rate.html', context)
 
 
