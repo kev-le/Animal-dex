@@ -76,7 +76,7 @@ def edit_pet(request, pet_id):
                 pet.animal = animal
                 pet.bio = form.cleaned_data['pet_bio']
 
-                if form.data['pet_image']:
+                if form.cleaned_data['pet_image']:
                     pet.user_image = form.cleaned_data['pet_image']
                 pet.save()
 
