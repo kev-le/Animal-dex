@@ -168,7 +168,8 @@
 
   function slide_panel_left(res) {
     $('.panel').animate({
-        left: '-150%'
+        left: '-150%',
+        opacity: 0,
     }, 400, null,function() { update_panel_info(res) });
     // update_panel_info(res)
   }
@@ -186,10 +187,10 @@
   function slide_panel_right() {
     $('.panel').css({"left": "150%"});
     $('.panel').animate({
-        left: '0%'
+        left: '0%',
+        opacity: 1,
     }, 400);
   }
-
 
 
   function responseMessage(msg) {
