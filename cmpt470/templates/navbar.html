@@ -7,7 +7,7 @@
         </button>
         <div id="navbarNavDropdown" class="navbar-collapse collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/animals">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
@@ -35,17 +35,17 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/profile/">{{ user.username|title }} </a>
+                        <a class="nav-link" href="/users/profile/">{{ user.username|title }}  <i class="fa fa-user-circle" style="font-size:18px"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
+                        <a class="nav-link" href="{% url 'logout' %}">Sign Out   <i class="fa fa-sign-out" aria-hidden="true" style="font-size:18px"></i></a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'login' %}">Login <i class="fa fa-sign-in" aria-hidden="true" style="font-size:18px"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                        <a class="nav-link" href="{% url 'signup' %}">Signup <i class="fa fa-user-plus" aria-hidden="true" style="font-size:18px"></i></a>
                     </li>
                 {% endif %}
             </ul>
