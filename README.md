@@ -12,6 +12,11 @@
 ### Build and run
 
 `docker-compose build & docker-compose up`
+In case it is not working, clear the database by following instructions below
+
+docker rm $(docker ps -a -q) -f
+docker volume prune
+docker-compose up --build
 
 URLs
 - Development site can be accessed at http://localhost:8000
