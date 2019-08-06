@@ -12,14 +12,15 @@ from .forms import create_pet_form, edit_pet_form
 from .models import Pet, Rating
 from animals.models import Animal, Cat, Dog, Bird
 
+from users.models import CustomUser
 
-
+import json
 
 def pets_index(request):
 
-    all_pets = sorted(Pet.objects.all(), key=lambda p: p.get_average_rating(), reverse=True)
+    all_pets = sorted(Pet.objects.all(), key=lambda p: (p.get_average_rating() * p.get_number_of_ratings()) , reverse=True)
     top_pets = all_pets[:5] # top 5 featured pets, based on rating
-    recent_pets = all_pets[5:] # rest of pets
+    recent_pets = Pet.objects.all().order_by('-pk')[:10]
 
     context = {'top_pets': top_pets, 'recent_pets' : recent_pets}
     return render(request, 'pets/index.html', context)
@@ -144,3 +145,53 @@ def rate(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
     context = { 'pet' : pet }
     return render(request, 'pets/rate.html', context)
+
+
+@login_required(login_url='/home')
+def rate_view(request):
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating', None)
+        petId = request.POST.get('petId', None)
+
+        # get associated pet to update its rating
+        pet = Pet.objects.get(id=petId)
+        if not pet:
+            return HttpResponse("Pet not found!", status=500)
+        else:
+            # update last seen pet
+            user = CustomUser.objects.get(id=request.user.id)
+            user.rate_index = pet.id
+
+            # make sure next pet actually exists
+            next_pet = Pet.objects.filter(id__gt=pet.id).order_by('id').first()
+            if not next_pet:
+                next_pet = Pet.objects.filter(id__gte=1).order_by('id').first()
+                user.rate_index = next_pet.id
+
+            user.save()
+
+            # create new Rating
+            rating = Rating.objects.create(user=request.user, pet=pet, scores=rating)
+            # create new rating for the pet
+            pet.rating_set.add(rating)
+            pet.save()
+
+
+            context = {
+                "id": next_pet.id,
+                "name" : next_pet.name,
+                "rating": next_pet.get_average_rating(),
+                "bio": next_pet.bio,
+                "url": next_pet.user_image.url,
+             }
+            return HttpResponse(json.dumps(context), content_type="application/json")
+
+    # pet = get_object_or_404(Pet, id=request.user.rate_index)
+    pet = Pet.objects.filter(id__gt=request.user.rate_index).order_by('id').first()
+
+    if not pet:
+        pet = Pet.objects.filter(id__gte=1).order_by('id').first()
+
+    context = { 'pet' : pet }
+    return render(request, 'pets/rate_view.html', context)
