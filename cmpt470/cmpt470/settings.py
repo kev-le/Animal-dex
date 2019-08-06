@@ -138,8 +138,8 @@ STATIC_ROOT = '/static'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
-    '/var/www/media/',
+    # '/var/www/static/',
+    # '/var/www/media/',
     os.path.join(BASE_DIR, 'media'),
 ]
 
