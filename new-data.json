@@ -30692,7 +30692,7 @@
   "pk": 4,
   "fields": {
     "app_label": "animals",
-    "model": "cat"
+    "model": "bird"
   }
 },
 {
@@ -30700,7 +30700,7 @@
   "pk": 5,
   "fields": {
     "app_label": "animals",
-    "model": "dog"
+    "model": "cat"
   }
 },
 {
@@ -30708,7 +30708,7 @@
   "pk": 6,
   "fields": {
     "app_label": "animals",
-    "model": "bird"
+    "model": "dog"
   }
 },
 {
