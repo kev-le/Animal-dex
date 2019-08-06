@@ -7,6 +7,11 @@ COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 ADD ./ /code
 CMD /wait.sh db 5432 \
+  && cd cmpt470 \
+  && chmod -R 777 media \
+  && ls -lha \
+  && cd .. \
   && python cmpt470/manage.py collectstatic --noinput \
   && python cmpt470/manage.py migrate \
+  && python cmpt470/manage.py loaddata new-data.json \
   && /usr/local/bin/uwsgi --ini /code/cmpt470/cmpt470/uwsgi.ini
