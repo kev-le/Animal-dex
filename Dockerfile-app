@@ -13,5 +13,5 @@ CMD /wait.sh db 5432 \
   && cd .. \
   && python cmpt470/manage.py collectstatic --noinput \
   && python cmpt470/manage.py migrate \
-  && python cmpt470/manage.py loaddata data2.json \
+  && python cmpt470/manage.py loaddata new-data.json \
   && /usr/local/bin/uwsgi --ini /code/cmpt470/cmpt470/uwsgi.ini
