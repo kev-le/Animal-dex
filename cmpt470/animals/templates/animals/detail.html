@@ -20,6 +20,8 @@
   {% endif %}
 {% endfor %}
 
+<hr>
+
 {% if isSpotted %}
   <p>You have spotted this animal</p>
   <p>Do you want to unspot this animal?</p>
@@ -44,9 +46,9 @@
 {% endif %}
 
 <br>
-<hr>
 
 {% if pets %}
+<hr>
     <h4>User pets: </h4>
     {% for pet in pets %}
         <div class="animal-box">
