@@ -30,8 +30,8 @@ home page: 127.0.0.1:8000/animals/
   
 
 ## Creating and Importing Data
-- Warning: The script takes roughly 4-5 hours to complete. However, is not necessary to do the instructions below to run the application as we have already done it.
-            Follow the instructions below if you would like to re-create and re-import data.
+- Warning: The script takes roughly 4-5 hours to complete. However, is not necessary to do the instructions below in order to run the application as we have already done it.
+            Follow the instructions below only if you would like to re-create and re-import data.
 - Change directories to `/data/code/`.
 - Run `python3 animals.py` to generate csv files.
 - The `data.json` file will be needed before using `download_pictures.py`. 
