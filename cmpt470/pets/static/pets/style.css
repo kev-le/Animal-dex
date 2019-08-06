@@ -65,3 +65,17 @@
 .animal-box {
     justify-content: center;
 }
+
+.pets-row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.pets-card {
+    width: 18rem;
+    margin: 10px;
+}
+
+.pets-card .animal-box {
+    margin-top: 20px;
+}
