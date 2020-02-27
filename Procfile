@@ -1,1 +1,0 @@
-web: gunicorn cmpt470.cmpt470.wsgi
