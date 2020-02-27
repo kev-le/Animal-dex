@@ -3,5 +3,5 @@ psycopg2>=2.7,<3.0
 pillow>=6.0,<6.2
 uwsgi
 django-extensions
-guincorn
+gunicorn
 django-heroku
