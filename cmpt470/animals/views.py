@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .models import Animal, Dog, Cat, Bird, Has_Spotted
-from cmpt470.pets.models import Pet, Rating
+from pets.models import Pet, Rating
 
 
 def display_results(request, animal_list, context):

@@ -25,7 +25,7 @@ SECRET_KEY = '#ywb-71ijuey5gck6(z&j((o&i&8z^pycu7k2y+7e%p=*%j7vj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['app', 'localhost', '127.0.0.1', 'frozen-stream-95231.herokuapp.com']
 
 
 # Application definition
@@ -77,16 +77,20 @@ WSGI_APPLICATION = 'cmpt470.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project',
-        'USER': 'project',
-        'PASSWORD': 'secret',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'project',
+#         'USER': 'project',
+#         'PASSWORD': 'secret',
+#         'HOST': 'db',
+#         'PORT': 5432,
+#     }
+# }
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
