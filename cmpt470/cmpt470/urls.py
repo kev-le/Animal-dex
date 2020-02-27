@@ -19,7 +19,7 @@ from django.views.generic.base import TemplateView # new
 from django.conf.urls.static import static
 from django.conf import settings
 
-from pets import views
+from cmpt470.pets import views
 
 urlpatterns = [
     path('animals/', include('animals.urls')),
