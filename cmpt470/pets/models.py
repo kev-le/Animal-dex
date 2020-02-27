@@ -11,7 +11,7 @@ from animals.models import Animal
 
 class Pet(models.Model):
     user       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    animal     = models.ForeignKey(Animal, on_delete='PROTECT')
+    animal     = models.ForeignKey(Animal, on_delete=models.PROTECT)
     name       = models.CharField(max_length=100, default=None, blank=True, null=True)
     bio        = models.TextField(default=None, blank=True, null=True)
     user_image = models.ImageField(upload_to='images/')

@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(blank=True, default=None, max_length=100, null=True)),
                 ('bio', models.TextField(blank=True, default=None, null=True)),
                 ('user_image', models.ImageField(upload_to='images/')),
-                ('animals', models.ForeignKey(on_delete='PROTECT', to='animals.Animal')),
+                ('animals', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='animals.Animal')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
