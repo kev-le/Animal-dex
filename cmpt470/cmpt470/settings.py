@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['app', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'pets.apps.PetsConfig',
+    'cmpt470.pets.apps.PetsConfig',
     'animals.apps.AnimalsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
