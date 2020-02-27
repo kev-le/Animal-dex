@@ -1,1 +1,1 @@
-web: gunicorn cmpt470.wsgi --log-file
+web: gunicorn cmpt470.wsgi --log-file -
