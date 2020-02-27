@@ -7,8 +7,8 @@ from django.shortcuts import render, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
 
-from animals.models import Has_Spotted
-from pets.models import Pet, Rating
+from cmpt470.animals.models import Has_Spotted
+from cmpt470.pets.models import Pet, Rating
 
 from .forms import CustomUserCreationForm
 from collections import OrderedDict
