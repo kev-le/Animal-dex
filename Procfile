@@ -1,1 +1,1 @@
-web: gunicorn cmpt470.wsgi
+web: gunicorn cmpt470.cmpt470.wsgi
